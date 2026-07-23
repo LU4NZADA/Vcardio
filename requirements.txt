@@ -1,0 +1,11 @@
+streamlit==1.45.1
+pandas==2.2.3
+plotly==6.0.1
+openpyxl==3.1.5
+fpdf2==2.8.3
+scipy==1.15.3
+numpy==2.2.6
+pytest==8.4.1
+pytest-cov==6.2.1
+ruff==0.11.13
+mypy==1.15.0
