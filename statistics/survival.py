@@ -4,15 +4,7 @@ Analises temporais e tendencias.
 
 import pandas as pd
 import numpy as np
-try:
-    try:
-    from scipy import stats
-    HAS_SCIPY = True
-except ImportError:
-    HAS_SCIPY = False
-    HAS_SCIPY = True
-except ImportError:
-    HAS_SCIPY = False
+
 
 
 def tendencia_temporal(df, col_periodo="mes", col_diag="diag_cat"):

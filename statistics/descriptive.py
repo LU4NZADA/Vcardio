@@ -4,6 +4,7 @@ Estatistica descritiva.
 
 import pandas as pd
 import numpy as np
+
 try:
     from scipy import stats
     HAS_SCIPY = True
