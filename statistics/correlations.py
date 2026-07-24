@@ -4,7 +4,11 @@ Correlacoes estatisticas.
 
 import pandas as pd
 import numpy as np
-from scipy import stats
+try:
+    from scipy import stats
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
 
 
 def matriz_correlacao_comorb(df, cols_comorb, col_diag="diag_cat"):

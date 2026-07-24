@@ -4,10 +4,20 @@ Testes de hipotese.
 
 import pandas as pd
 import numpy as np
-from scipy import stats
+try:
+    try:
+    from scipy import stats
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
 
 
 def teste_associacao(var1, var2):
+    if not HAS_SCIPY:
+        return {"erro": "scipy nao instalado"}
     tab = pd.crosstab(var1, var2)
     if tab.shape[0] < 2 or tab.shape[1] < 2:
         return {"erro": "Tabela insuficiente"}
@@ -27,6 +37,8 @@ def teste_associacao(var1, var2):
 
 
 def teste_mannwhitney(s1, s2):
+    if not HAS_SCIPY:
+        return {"erro": "scipy nao instalado"}
     s1, s2 = s1.dropna(), s2.dropna()
     if len(s1) < 3 or len(s2) < 3:
         return {"erro": "Dados insuficientes"}

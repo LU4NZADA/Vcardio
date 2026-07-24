@@ -4,7 +4,11 @@ Estatistica descritiva.
 
 import pandas as pd
 import numpy as np
-from scipy import stats
+try:
+    from scipy import stats
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
 
 
 def resumo_completo(series, nome="Variavel"):
@@ -15,7 +19,10 @@ def resumo_completo(series, nome="Variavel"):
     media = s.mean()
     desvio = s.std()
     se = desvio / np.sqrt(n)
-    t_crit = stats.t.ppf(0.975, df=n - 1)
+    if HAS_SCIPY:
+        t_crit = stats.t.ppf(0.975, df=n - 1)
+    else:
+        t_crit = 1.96
     return {
         "nome": nome, "n": n, "media": round(media, 2),
         "mediana": round(s.median(), 2), "desvio_padrao": round(desvio, 2),
@@ -37,6 +44,8 @@ def resumo_por_grupo(series, grupos, nome_var="Valor"):
 
 
 def comparar_medias(series1, series2, nome1="G1", nome2="G2"):
+    if not HAS_SCIPY:
+        return {"erro": "scipy nao instalado"}
     s1, s2 = series1.dropna(), series2.dropna()
     if len(s1) < 2 or len(s2) < 2:
         return {"erro": "Dados insuficientes"}
