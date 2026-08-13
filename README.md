@@ -6,3 +6,5 @@ Projeto Saude Digital Movel - UFVJM / PIBIC / Edital 005/2025
 ```bash
 pip install -r requirements.txt
 streamlit run app.py"# Vcardio"  
+"# Vcardio"  
+"# Vcardio"  
