@@ -112,7 +112,7 @@ def aplicar_filtros(df: pd.DataFrame, filtros: dict) -> pd.DataFrame:
         elif val == "Nao":
             df = df[df[col] == 0]
     data = filtros.get("data")
-    if data and len(data) == 2 and "Data_cadastro" in df.columns:
+    if isinstance(data, (tuple, list)) and len(data) == 2 and "Data_cadastro" in df.columns:
         dt_inicio = pd.Timestamp(data[0])
         dt_fim = pd.Timestamp(data[1]) + pd.Timedelta(days=1)
         df = df[(df["Data_cadastro"] >= dt_inicio) & (df["Data_cadastro"] < dt_fim)]
