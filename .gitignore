@@ -1,8 +1,33 @@
+# Dados
+ecg.xlsx
+Locais.xlsx
+
+# Python
 __pycache__/
 *.pyc
-.venv/
-.env
-*.xlsx
-check_*.py
-verificar*.py
-requirements_full.txt
+*.pyo
+
+# Logs
+logs/*.log
+app.log
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Arquivos temporarios
+fix_*.py
+test_*.py
+debug_*.py
+criar_*.py
+*.txt
+code.txt
+
+# Lixo gerado por erro
+')
+0
+0)
+10s}
+30
+python
+type
+min_exames].copy()

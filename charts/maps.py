@@ -4,13 +4,12 @@ Mapas Scattermapbox com hover rico e legenda de cores.
 
 import plotly.graph_objects as go
 from config.plotly import PLOTLY_THEME
-from components.filters import CIDADES_FORA_MG
 
 
-def mapa_risco(mapa_df):
+
+def mapa_risco(mapa_df, titulo_col="Cidade"):
     """Mapa de risco com tamanhos proporcionais e hover detalhado."""
     mp = mapa_df.dropna(subset=["lat"]).copy()
-    mp = mp[~mp["Cidade"].isin(CIDADES_FORA_MG)]
     if mp.empty:
         return None
 
@@ -76,7 +75,6 @@ def mapa_risco(mapa_df):
     )
     return fig
 
-
 def mapa_simples(mapa_df, cidade_destaque=None, df=None):
     """Mapa simples de distribuicao com opcao de destaque."""
     from constants import MUN_COORDS
@@ -95,7 +93,6 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
     else:
         mp = mapa_df.copy()
 
-    mp = mp[~mp["Cidade"].isin(CIDADES_FORA_MG)]
     mp = mp.dropna(subset=["lat"])
     if mp.empty:
         return None

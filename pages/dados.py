@@ -10,7 +10,7 @@ from exports.pdf import gerar_pdf
 
 def render(df, ind):
     sub_header("Tabela de dados detalhados")
-    colunas = {"Cidade": "Municipio", "diag_cat": "Diagnostico", "Sexo": "Sexo",
+    colunas = {"Cidade": "Municipio", "Distrito": "Distrito", "diag_cat": "Diagnostico", "Sexo": "Sexo",
                "idade": "Idade", "Data_cadastro": "Data do Exame",
                "Hipertenso": "Hipertenso", "Diabetes Mellitus": "Diabetes",
                "Tabagista": "Tabagista", "Etilista": "Etilista"}

@@ -33,7 +33,8 @@ CSS_COMPONENTS = """
 .topbar-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
 .topbar-sub { font-size: 12px; color: #8b949e; font-family: 'IBM Plex Mono', monospace; }
 .badge { display: inline-block; background: rgba(226,75,74,.15); border: 1px solid rgba(226,75,74,.4); color: #e24b4a; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-family: 'IBM Plex Mono', monospace; margin-top: 6px; }
-.kpi-card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px 18px; position: relative; overflow: hidden; }
+.kpi-card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px 18px; position: relative; overflow: hidden; text-align: center !important; }
+.kpi-card .kpi-label, .kpi-card .kpi-value, .kpi-card .kpi-sub { text-align: center !important; }
 .kpi-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
 .kpi-card.red::after { background: #e24b4a; }
 .kpi-card.amber::after { background: #ba7517; }

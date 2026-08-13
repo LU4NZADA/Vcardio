@@ -11,7 +11,13 @@ from constants import ECG_ACHADOS
 
 
 def _render_kpis_municipio(df, municipio):
-    mun_df = df[df["Cidade"] == municipio].copy()
+    from constants_locais import LOCAIS, _norm
+    mn = _norm(municipio)
+    distritos_do_mun = [d for _, _, m, d, _ in LOCAIS if _norm(m) == mn]
+    mask = df["Cidade"].apply(lambda c: _norm(c) == mn)
+    if distritos_do_mun:
+        mask = mask | df["Distrito"].isin(distritos_do_mun)
+    mun_df = df[mask].copy()
     n = len(mun_df)
     if n == 0:
         st.warning(f"Nenhum exame encontrado para {municipio}.")
@@ -73,7 +79,7 @@ def _render_kpis_municipio(df, municipio):
         achados_completo = pd.concat(todos_achados).sort_values("Casos", ascending=False)
         fig = achados_bar(achados_completo, f"Achados ECG - {municipio}", "#e24b4a")
         if fig:
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="geral_chart_1")
     else:
         st.info("Nenhum achado ECG neste municipio.")
 
@@ -99,44 +105,29 @@ def _render_kpis_municipio(df, municipio):
 
 
 def render(df, ind):
-    mun_sel = st.selectbox(
-        "Ver detalhes de um municipio (opcional)",
-        ["(Geral)"] + sorted(df["Cidade"].unique().tolist()),
-        key="mun_geral",
-    )
+    n_total = ind.get("n_total", ind["n"])
+    n_muns_total = ind.get("n_muns_total", ind["n_muns"])
+    render_kpi_row([
+        ("red", "Exames", fmt(n_total), f"{n_muns_total} municipios"),
+        ("amber", "Idade media", f"{ind['avg_age']}", "anos"),
+        ("blue", "Arritmias", fmt(ind["n_arr"]),
+         f"{round(100*ind['n_arr']/n_total,1)}%"),
+        ("purple", "Bloqueios", fmt(ind["n_blk"]),
+         f"{round(100*ind['n_blk']/n_total,1)}%"),
+        ("green", "Alterados", f"{ind['alt_pct']}%", "laudos alterados"),
+    ])
+    st.markdown("<br>", unsafe_allow_html=True)
+    render_kpi_row([
+        ("red", "Repolarizacao", fmt(ind["n_repo"]), "achados"),
+        ("blue", "Sobrecargas", fmt(ind["n_sobr"]), "achados"),
+        ("purple", "Fibroses", fmt(ind["n_fibr"]), "achados"),
+        ("cyan", "PR curto/WPW", f"{ind['n_pr']}/{ind['n_wpw']}", "achados"),
+        ("green", "Marcapassos", fmt(ind["n_marc"]), "pacientes"),
+    ])
+    render_alerts(ind)
 
-    if mun_sel == "(Geral)":
-        n_total = ind.get("n_total", ind["n"])
-        n_muns_total = ind.get("n_muns_total", ind["n_muns"])
-        render_kpi_row([
-            ("red", "Exames", fmt(n_total), f"{n_muns_total} municipios"),
-            ("amber", "Idade media", f"{ind['avg_age']}", "anos"),
-            ("blue", "Arritmias", fmt(ind["n_arr"]),
-             f"{round(100*ind['n_arr']/n_total,1)}%"),
-            ("purple", "Bloqueios", fmt(ind["n_blk"]),
-             f"{round(100*ind['n_blk']/n_total,1)}%"),
-            ("green", "Alterados", f"{ind['alt_pct']}%", "laudos alterados"),
-        ])
-        st.markdown("<br>", unsafe_allow_html=True)
-        render_kpi_row([
-            ("red", "Repolarizacao", fmt(ind["n_repo"]), "achados"),
-            ("blue", "Sobrecargas", fmt(ind["n_sobr"]), "achados"),
-            ("purple", "Fibroses", fmt(ind["n_fibr"]), "achados"),
-            ("cyan", "PR curto/WPW", f"{ind['n_pr']}/{ind['n_wpw']}", "achados"),
-            ("green", "Marcapassos", fmt(ind["n_marc"]), "pacientes"),
-        ])
-        render_alerts(ind)
-
-        sub_header("Top 10 achados ECG")
-        if not ind["top10_achados"].empty:
-            fig = achados_bar(ind["top10_achados"], "Achados mais frequentes")
-            if fig:
-                st.plotly_chart(fig, use_container_width=True)
-    else:
-        _render_kpis_municipio(df, mun_sel)
-
-    sub_header("Distribuicao territorial")
-    cidade_para_mapa = mun_sel if mun_sel != "(Geral)" else None
-    fig = mapa_simples(ind["mapa_dados"], cidade_destaque=cidade_para_mapa, df=df)
-    if fig:
-        st.plotly_chart(fig, use_container_width=True)
+    sub_header("Top 10 achados ECG")
+    if not ind["top10_achados"].empty:
+        fig = achados_bar(ind["top10_achados"], "Achados mais frequentes")
+        if fig:
+            st.plotly_chart(fig, use_container_width=True, key="geral_chart_2")

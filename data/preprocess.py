@@ -1,10 +1,7 @@
-"""
-Transformacoes: idade, faixa, diag_cat, colunas temporais.
-"""
-
 import pandas as pd
 from config.app import MESES_PT, BINS_IDADE, LABELS_IDADE
 from analysis.classificacao import categorizar_diagnostico, classificar_achados
+from constants_locais import buscar_distrito, buscar_municipio_coleta
 
 
 def processar_dados(df):
@@ -27,4 +24,36 @@ def processar_dados(df):
     df["faixa"] = pd.cut(df["idade"], bins=BINS_IDADE, labels=LABELS_IDADE, right=False)
     for col in ["Hipertenso", "Diabetes Mellitus", "Tabagista", "Etilista", "Marcapasso"]:
         df[col] = df[col].fillna(0).astype(int)
+
+    df["Distrito"] = df.apply(lambda r: buscar_distrito(r["Data_cadastro"], r["Cidade"]), axis=1)
+    # Normaliza nomes de distritos usando LOCAIS como referencia
+    from constants_locais import LOCAIS, _norm
+    _dist_map = {}
+    for _, _, mun, dist, _ in LOCAIS:
+        dn = _norm(dist)
+        if dn not in _dist_map:
+            _dist_map[dn] = dist.strip()
+        # Tambem mapear nome do municipio para o distrito principal
+        mn = _norm(mun)
+        if mn not in _dist_map:
+            _dist_map[mn] = dist.strip()
+    def _norm_dist(s):
+        if not s or s.strip() == "":
+            return ""
+        sn = _norm(s)
+        if sn in _dist_map:
+            return _dist_map[sn]
+        return s.strip()
+    df["Distrito"] = df["Distrito"].apply(_norm_dist)
+    df["Municipio_Coleta"] = df.apply(lambda r: buscar_municipio_coleta(r["Data_cadastro"], r["Cidade"]), axis=1)
+    # Normaliza Municipio_Coleta: titulo, sem acentos duplicados
+    from constants_locais import LOCAIS as _L
+    _mun_canon = {}
+    for _, _, m, _, _ in _L:
+        mt = m.strip().title()
+        _mun_canon[_norm(m)] = mt
+    df["Municipio_Coleta"] = df["Municipio_Coleta"].apply(
+        lambda s: _mun_canon.get(_norm(s), s.strip().title()) if s else s
+    )
+
     return df

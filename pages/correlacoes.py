@@ -27,12 +27,17 @@ def render(df, ind):
     if fig:
         st.plotly_chart(fig, use_container_width=True)
 
-    sub_header("Risco territorial")
-    resultado = risco_chart(ind["risco_municipio"])
-    if resultado:
-        if isinstance(resultado, tuple):
-            fig, legenda = resultado
-            st.plotly_chart(fig, use_container_width=True)
-            st.markdown(legenda, unsafe_allow_html=True)
-        else:
-            st.plotly_chart(resultado, use_container_width=True)
+    sub_header("Risco territorial por local do exame")
+    if "risco_distrito" in ind and not ind["risco_distrito"].empty:
+        rd = ind["risco_distrito"].copy()
+        rd.rename(columns={"Distrito": "Cidade", "total": "total"}, inplace=True)
+        resultado = risco_chart(rd)
+        if resultado:
+            if isinstance(resultado, tuple):
+                fig, legenda = resultado
+                st.plotly_chart(fig, use_container_width=True)
+                st.markdown(legenda, unsafe_allow_html=True)
+            else:
+                st.plotly_chart(resultado, use_container_width=True)
+    else:
+        st.info("Nenhum distrito identificado.")

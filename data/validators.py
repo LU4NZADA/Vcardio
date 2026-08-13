@@ -38,11 +38,24 @@ def verificar_colunas(df):
         else:
             df[alias] = ""
 
+    import unicodedata
+    def _norm(s):
+        s = str(s).strip().lower()
+        s = unicodedata.normalize("NFD", s)
+        s = "".join(ch for ch in s if unicodedata.category(ch) != "Mn")
+        return " ".join(s.split())
+
+    # Mapeia colunas do Excel para nomes sem acento do ECG_ACHADOS
+    excel_norm = {_norm(c): c for c in df.columns}
     for cat, subcats in ECG_ACHADOS.items():
         for nome, cols in subcats.items():
             for c in cols:
                 if c not in df.columns:
-                    df[c] = 0
+                    cn = _norm(c)
+                    if cn in excel_norm:
+                        df[c] = df[excel_norm[cn]].fillna(0).astype(int)
+                    else:
+                        df[c] = 0
 
     if "Ritmo sinusal" not in df.columns:
         df["Ritmo sinusal"] = 0

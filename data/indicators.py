@@ -8,7 +8,7 @@ from constants import ECG_ACHADOS
 from analysis.ecg import achado_mask, contar_achado, achados_df
 from epidemiology.crosstab import matrix_achado_var, prev_comorb_por_achado
 from epidemiology.comorbidades import resumo_comorbidades, comorb_por_sexo, comorb_por_faixa
-from epidemiology.territorial import risco_territorial, comorb_por_municipio
+from epidemiology.territorial import risco_territorial, risco_territorial_distrito, comorb_por_municipio
 
 
 def _value_counts_rename(series, col_nome, col_valor="Qtd", sort_index=False, head=None):
@@ -91,6 +91,21 @@ def calcular_indicadores(df):
     mapa = ind["risco_municipio"].copy()
     mapa.rename(columns={"total": "exames"}, inplace=True)
     ind["mapa_dados"] = mapa
+    ind["risco_distrito"] = risco_territorial_distrito(df)
+    # Mapa agregado por municipio (todos os distritos de um municipio somados)
+    risco_dist = ind["risco_distrito"].copy()
+    if not risco_dist.empty:
+        mapa_agg = risco_dist.groupby("Municipio").agg(
+            exames=("total", "sum"),
+            alterados=("alterados", "sum"),
+            lat=("lat", "first"),
+            lon=("lon", "first"),
+        ).reset_index()
+        mapa_agg["pct"] = round(100 * mapa_agg["alterados"] / mapa_agg["exames"], 1)
+        mapa_agg.rename(columns={"Municipio": "Cidade"}, inplace=True)
+        ind["mapa_distrito_dados"] = mapa_agg
+    else:
+        ind["mapa_distrito_dados"] = pd.DataFrame()
 
     todos_cols = {}
     for cat, subcats in ECG_ACHADOS.items():
@@ -144,14 +159,15 @@ def calcular_indicadores(df):
             comor_diag[label] = df.groupby("diag_cat")[ccol].mean().round(3) * 100
     ind["hm_diag_comorb"] = comor_diag
 
-    top_muns = df["Cidade"].value_counts().head(15).index.tolist()
-    df_top = df[df["Cidade"].isin(top_muns)]
+    mun_col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    top_muns = df[mun_col].value_counts().head(15).index.tolist()
+    df_top = df[df[mun_col].isin(top_muns)]
 
     def _mun_matrix(subcats):
         rows = []
         for nome, cols in subcats.items():
             for mun in top_muns:
-                sub = df_top[df_top["Cidade"] == mun]
+                sub = df_top[df_top[mun_col] == mun]
                 cnt = contar_achado(sub, cols)
                 if cnt > 0:
                     rows.append({"Municipio": mun, "Achado": nome, "N": cnt})
@@ -191,14 +207,18 @@ def calcular_indicadores(df):
         if not todos_ach.empty else pd.DataFrame()
     )
 
-    hip_df = df[df["_hipotese"].astype(str).str.strip().ne("")]
+    # BUGFIX: antes, ".astype(str)" transformava NaN na string "nan",
+    # que passava no filtro ".ne('')" e era contado como uma hipotese
+    #/indicacao real. Agora checamos ".notna()" primeiro para excluir
+    # de fato os registros sem valor preenchido.
+    hip_df = df[df["_hipotese"].notna() & df["_hipotese"].astype(str).str.strip().ne("")]
     if len(hip_df) > 0:
         hip_vc = _value_counts_rename(hip_df["_hipotese"], "Hipotese", "Frequencia", head=20)
         ind["hipoteses_freq"] = hip_vc
     else:
         ind["hipoteses_freq"] = pd.DataFrame()
 
-    ind_df = df[df["_indicacao"].astype(str).str.strip().ne("")]
+    ind_df = df[df["_indicacao"].notna() & df["_indicacao"].astype(str).str.strip().ne("")]
     if len(ind_df) > 0:
         ind_vc = _value_counts_rename(ind_df["_indicacao"], "Indicacao", "Frequencia", head=20)
         ind["indicacoes_freq"] = ind_vc

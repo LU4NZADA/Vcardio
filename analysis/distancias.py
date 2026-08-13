@@ -1,12 +1,12 @@
 """
 Calculo de distancias percorridas pelo Projeto Saude Digital Movel.
-A equipe parte de Diamantina (base) ate a cidade natal de cada paciente
-para realizar os exames ECG. Apenas cidades de Minas Gerais sao consideradas.
+A equipe parte de Diamantina (base) ate o local onde o exame foi realizado.
 """
 
 import math
 from itertools import combinations
 from constants import MUN_COORDS
+from constants_locais import LOCAIS, _norm
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -20,90 +20,148 @@ def haversine(lat1, lon1, lat2, lon2):
     return R * c
 
 
-def calcular_distancia_base(cidade_origem, cidades_destino):
-    if cidade_origem not in MUN_COORDS:
-        return 0.0, []
-    base = MUN_COORDS[cidade_origem]
+def _coords_municipio(nome):
+    """Busca coordenadas de um municipio, tentando com e sem acento."""
+    if nome in MUN_COORDS:
+        return MUN_COORDS[nome]
+    norm = _norm(nome)
+    for k, v in MUN_COORDS.items():
+        if _norm(k) == norm:
+            return v
+    return None
+
+
+def _distrito_para_municipio(distrito_nome):
+    """Busca o municipio real de um distrito na tabela LOCAIS."""
+    dist_norm = _norm(distrito_nome)
+    for _, _, mun, dist, _ in LOCAIS:
+        if _norm(dist) == dist_norm:
+            return mun
+    return None
+
+
+def calcular_distancias_distritos(df):
+    """Calcula rotas: Diamantina -> cada municipio -> Diamantina (ida e volta)."""
+    cidade_base = "Diamantina"
+    base_coords = _coords_municipio(cidade_base)
+
+    # Conta exames por municipio de coleta
+    col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    contagem = df[df[col].ne("") & (df[col].str.strip().ne(""))].groupby(col).size().reset_index(name="exames")
+
+    municipios_visitados = []
     rotas = []
-    total = 0.0
-    for cidade in cidades_destino:
-        if cidade in MUN_COORDS and cidade != cidade_origem:
-            dist = haversine(base[0], base[1], MUN_COORDS[cidade][0], MUN_COORDS[cidade][1])
-            total += dist * 2
-            rotas.append({"origem": cidade_origem, "destino": cidade, "km": round(dist, 1)})
-    return round(total, 1), rotas
+    total_estimado = 0.0
 
+    for _, row in contagem.iterrows():
+        mun = row[col]
+        if not mun or not mun.strip():
+            continue
+        exames = int(row["exames"])
+        mn = _norm(mun)
 
-def calcular_distancia_minima(cidades_visitadas):
-    coords = {c: MUN_COORDS[c] for c in cidades_visitadas if c in MUN_COORDS}
-    if len(coords) < 2:
-        return 0.0, []
+        # Diamantina fica na base, distancia zero
+        if mn == _norm(cidade_base):
+            municipios_visitados.append({
+                "municipio": mun.strip().title(),
+                "lat": base_coords[0] if base_coords else 0,
+                "lon": base_coords[1] if base_coords else 0,
+                "exames": exames,
+                "distritos": [],
+                "km": 0,
+                "km_ida_volta": 0,
+            })
+            continue
 
-    visitados = set()
-    nao_visitados = set(coords.keys())
-    primeiro = nao_visitados.pop()
-    visitados.add(primeiro)
-    total = 0.0
+        coords = _coords_municipio(mun)
+        if not coords or not base_coords:
+            continue
+
+        km_ida = haversine(base_coords[0], base_coords[1], coords[0], coords[1])
+        km_ida_volta = round(km_ida * 2, 1)
+
+        # Distritos desse municipio
+        distritos_do_mun = [
+            (d, int(e)) for _, _, m, d, e in LOCAIS
+            if _norm(m) == mn and d and int(e) > 0
+        ]
+
+        rotas.append({
+            "origem": cidade_base,
+            "destino": mun.strip().title(),
+            "municipio": mun.strip().title(),
+            "exames": exames,
+            "km": round(km_ida, 1),
+            "km_ida_volta": km_ida_volta,
+        })
+
+        municipios_visitados.append({
+            "municipio": mun.strip().title(),
+            "lat": coords[0],
+            "lon": coords[1],
+            "exames": exames,
+            "distritos": [d for d, _ in distritos_do_mun],
+            "km": round(km_ida, 1),
+            "km_ida_volta": km_ida_volta,
+        })
+
+        total_estimado += km_ida_volta
+
+    # MST entre municipios visitados (exceto Diamantina)
+    coords_muns = {m["municipio"]: (m["lat"], m["lon"]) for m in municipios_visitados if m["km"] > 0}
+    muns_list = list(coords_muns.keys())
+    dist_minima = 0.0
     arestas = []
 
-    while nao_visitados:
-        menor_dist = float("inf")
-        melhor_cidade = None
-        melhor_de = None
-        for v in visitados:
-            for nv in nao_visitados:
-                d = haversine(coords[v][0], coords[v][1], coords[nv][0], coords[nv][1])
-                if d < menor_dist:
-                    menor_dist = d
-                    melhor_cidade = nv
-                    melhor_de = v
-        if melhor_cidade:
-            total += menor_dist
-            arestas.append({"de": melhor_de, "para": melhor_cidade, "km": round(menor_dist, 1)})
-            visitados.add(melhor_cidade)
-            nao_visitados.remove(melhor_cidade)
+    if len(muns_list) >= 2:
+        visitados = set()
+        nao_visitados = set(muns_list)
+        primeiro = cidade_base
+        visitados.add(primeiro)
+        nao_visitados.discard(primeiro)
 
-    return round(total, 1), arestas
+        while nao_visitados:
+            menor_dist = float("inf")
+            melhor = None
+            melhor_de = None
+            for v in visitados:
+                for nv in nao_visitados:
+                    c1 = coords_muns.get(v, base_coords if v == cidade_base else None)
+                    c2 = coords_muns.get(nv)
+                    if not c1 or not c2:
+                        continue
+                    d = haversine(c1[0], c1[1], c2[0], c2[1])
+                    if d < menor_dist:
+                        menor_dist = d
+                        melhor = nv
+                        melhor_de = v
+            if melhor:
+                dist_minima += menor_dist
+                arestas.append({"de": melhor_de, "para": melhor, "km": round(menor_dist, 1)})
+                visitados.add(melhor)
+                nao_visitados.discard(melhor)
 
-
-def calcular_todas_distancias(cidades_visitadas, cidade_base="Diamantina"):
-    # Apenas cidades que existem em MUN_COORDS (so MG)
-    cidades_com_coords = [c for c in cidades_visitadas if c in MUN_COORDS]
-    cidades_sem_coords = len(cidades_visitadas) - len(cidades_com_coords)
-
-    dist_base, rotas_base = calcular_distancia_base(cidade_base, cidades_com_coords)
-    dist_minima, arestas = calcular_distancia_minima(cidades_com_coords)
-    total_estimado = sum(r["km"] * 2 for r in rotas_base)
-
-    pares = []
-    for c1, c2 in combinations(cidades_com_coords, 2):
-        d = haversine(MUN_COORDS[c1][0], MUN_COORDS[c1][1],
-                      MUN_COORDS[c2][0], MUN_COORDS[c2][1])
-        pares.append({"de": c1, "para": c2, "km": round(d, 1)})
-    pares.sort(key=lambda x: x["km"], reverse=True)
-
-    proximos = sorted(pares, key=lambda x: x["km"])[:10]
-
-    distancias_base = []
-    for c in cidades_com_coords:
-        d = haversine(MUN_COORDS[cidade_base][0], MUN_COORDS[cidade_base][1],
-                      MUN_COORDS[c][0], MUN_COORDS[c][1])
-        distancias_base.append({"Cidade": c, "km": round(d, 1)})
-    distancias_base.sort(key=lambda x: x["km"], reverse=True)
+    # Exames por local (distritos) para compatibilidade
+    exames_por_local = []
+    for _, _, mun, dist, ecg in LOCAIS:
+        if int(ecg) > 0:
+            exames_por_local.append({
+                "distrito": dist,
+                "municipio": mun.strip().title(),
+                "exames": int(ecg),
+            })
 
     return {
         "cidade_base": cidade_base,
-        "total_cidades_visitadas": len(cidades_visitadas),
-        "cidades_mg": len(cidades_com_coords),
-        "cidades_fora_mg": cidades_sem_coords,
-        "cidades_com_coordenadas": len(cidades_com_coords),
-        "distancia_base_ida_volta_km": dist_base,
-        "distancia_minima_percurso_km": dist_minima,
-        "total_estimado_km": total_estimado,
-        "rotas": rotas_base,
+        "base_coords": base_coords,
+        "total_locais": len([m for m in municipios_visitados if m["km"] > 0]),
+        "locais_com_coords": len(rotas),
+        "total_estimado_km": round(total_estimado, 1),
+        "distancia_minima_percurso_km": round(dist_minima * 2, 1),
+        "media_km_por_local": round(total_estimado / max(len(rotas), 1), 1),
+        "rotas": rotas,
         "arestas_mst": arestas,
-        "pares_mais_distantes": pares[:10],
-        "pares_mais_proximos": proximos,
-        "cidades_mais_distantes_base": distancias_base[:15],
-        "media_km_por_cidade": round(total_estimado / max(len(cidades_com_coords), 1), 1),
+        "municipios_visitados": municipios_visitados,
+        "exames_por_local": exames_por_local,
+        "coords_muns": coords_muns,
     }
