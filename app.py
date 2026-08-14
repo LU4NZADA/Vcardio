@@ -5,10 +5,10 @@
  PIBIC / Edital 005/2025
 ==============================================================
 """
-
 import time
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 
 from config.settings import settings
 
@@ -39,21 +39,23 @@ with st.sidebar:
 
 from data.cache import cached_load
 
-try:
-    fonte = arquivo if arquivo else settings.DADOS_PADRAO
-    df_original = cached_load(fonte)
-
-    if df_original is None or not isinstance(df_original, pd.DataFrame) or df_original.empty:
-        st.warning("Arquivo vazio ou sem dados validos. Carregue a planilha na barra lateral.")
-        st.stop()
-
-    nome = arquivo.name if arquivo else settings.DADOS_PADRAO
-    log_carregamento(nome, len(df_original), len(df_original.columns))
-
-except FileNotFoundError:
-    log_erro("carregamento", FileNotFoundError("Arquivo nao encontrado"))
-    st.warning("Arquivo ecg.xlsx nao encontrado. Carregue a planilha (.xlsx) na barra lateral.")
+if arquivo is not None:
+    bytes_data = arquivo.getvalue()
+    nome = arquivo.name
+elif Path(settings.DADOS_PADRAO).exists():
+    with open(settings.DADOS_PADRAO, "rb") as f:
+        bytes_data = f.read()
+    nome = settings.DADOS_PADRAO
+else:
+    st.warning("Carregue a planilha de exames (.xlsx) na barra lateral.")
     st.stop()
+
+try:
+    df_original = cached_load(bytes_data, nome)
+    if df_original is None or not isinstance(df_original, pd.DataFrame) or df_original.empty:
+        st.warning("Arquivo vazio ou sem dados validos.")
+        st.stop()
+    log_carregamento(nome, len(df_original), len(df_original.columns))
 except Exception as e:
     log_erro("carregamento", e)
     st.error(f"Erro ao carregar: {e}")

@@ -50,11 +50,24 @@ def invalidate():
     logger.info("[CACHE] Cache limpo")
 
 
-@st.cache_data(ttl=0, show_spinner="Carregando dados...")
-def cached_load(path_or_buffer):
+@st.cache_data(show_spinner="Carregando dados...")
+def cached_load(bytes_data, filename):
+    """Recebe bytes puros (hashable pelo Streamlit)."""
+    import io
     from data.loader import _ler_excel
     from data.validators import verificar_colunas
     from data.preprocess import processar_dados
-    raw = _ler_excel(path_or_buffer)
+
+    buffer = io.BytesIO(bytes_data)
+    raw = _ler_excel(buffer)
+
+    if raw is None or raw.empty:
+        return pd.DataFrame()
+
     raw = verificar_colunas(raw)
-    return processar_dados(raw)
+    result = processar_dados(raw)
+
+    if result is None:
+        return pd.DataFrame()
+
+    return result
