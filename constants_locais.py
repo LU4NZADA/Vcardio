@@ -69,7 +69,6 @@ LOCAIS = [
     ("2024-10-01", "2024-10-31", "Diamantina", "UFVJM (Servidor)", 85),
     ("2024-10-01", "2024-10-31", "Diamantina", "Cazuza", 38),
     ("2024-11-01", "2024-11-30", "Chapada Do Norte", "Chapada do Norte", 129),
-    ("2024-08-01", "2024-11-30", "Porto Alegre", "Porto Alegre", 0),
     ("2024-12-01", "2024-12-31", "Diamantina", "São João da Chapada", 90),
     ("2024-12-01", "2024-12-31", "Diamantina", "Diamantina EX (1)", 0),
     ("2024-12-01", "2024-12-31", "Diamantina", "Diamantina EX (2)", 0),

@@ -25,15 +25,7 @@ def processar_dados(df):
         # =============================================
         # FILTRO: manter apenas municipios do VJ
         # =============================================
-        municipios_vj = set()
-        for _, _, mun, _, _ in LOCAIS:
-            municipios_vj.add(_norm(mun))
-        mask = df["Cidade"].apply(lambda c: _norm(c) in municipios_vj)
-        removidos = df[~mask]["Cidade"].unique()
-        if len(removidos) > 0:
-            import logging
-            logging.info(f"[FILTRO] {len(removidos)} municipios fora do VJ removidos: {list(removidos)[:10]}...")
-        df = df[mask].copy()
+    
 
         df["Sexo"] = df["Sexo"].fillna("Nao especificado").str.strip()
         df.loc[df["Sexo"].str.contains("especificado", case=False, na=False), "Sexo"] = "Nao especificado"
