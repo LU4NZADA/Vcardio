@@ -1,3 +1,5 @@
+# VCARDIO cache v2 - atualizado
+
 """
 Cache centralizado com decorators.
 """
