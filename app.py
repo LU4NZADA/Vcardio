@@ -1,13 +1,14 @@
 """
 ==============================================================
- PAINEL INTELIGENTE DE VIGILÂNCIA CARDIOVASCULAR v3.6.1
- Projeto Saúde Digital Móvel - UFVJM
+ PAINEL INTELIGENTE DE VIGILANCIA CARDIOVASCULAR v3.6.1
+ Projeto Saude Digital Movel - UFVJM
  PIBIC / Edital 005/2025
 ==============================================================
 """
 
 import time
 import streamlit as st
+import pandas as pd
 
 from config.settings import settings
 
@@ -39,14 +40,19 @@ with st.sidebar:
 from data.cache import cached_load
 
 try:
-    df_original = cached_load(arquivo if arquivo else settings.DADOS_PADRAO)
-    log_carregamento(
-        arquivo.name if arquivo else settings.DADOS_PADRAO,
-        len(df_original), len(df_original.columns),
-    )
+    fonte = arquivo if arquivo else settings.DADOS_PADRAO
+    df_original = cached_load(fonte)
+
+    if df_original is None or not isinstance(df_original, pd.DataFrame) or df_original.empty:
+        st.warning("Arquivo vazio ou sem dados validos. Carregue a planilha na barra lateral.")
+        st.stop()
+
+    nome = arquivo.name if arquivo else settings.DADOS_PADRAO
+    log_carregamento(nome, len(df_original), len(df_original.columns))
+
 except FileNotFoundError:
     log_erro("carregamento", FileNotFoundError("Arquivo nao encontrado"))
-    st.error("Arquivo ecg.xlsx nao encontrado.")
+    st.warning("Arquivo ecg.xlsx nao encontrado. Carregue a planilha (.xlsx) na barra lateral.")
     st.stop()
 except Exception as e:
     log_erro("carregamento", e)
@@ -58,6 +64,10 @@ from components.filters import render_filtros
 
 dashboard = DashboardService(df_original)
 filtros = render_filtros(df_original)
+
+if filtros is None:
+    st.stop()
+
 df, ind, alertas = dashboard.preparar(filtros)
 
 if dashboard.vazio:
