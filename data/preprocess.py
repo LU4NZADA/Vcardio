@@ -28,6 +28,25 @@ def processar_dados(df):
     for col in ["Hipertenso", "Diabetes Mellitus", "Tabagista", "Etilista", "Marcapasso"]:
         df[col] = df[col].fillna(0).astype(int)
 
+    # Normaliza textos clinicos antes de tudo
+    import re as _re
+    def _norm_texto(s):
+        if pd.isna(s) or str(s).strip() == "":
+            return ""
+        s = str(s).strip().lower()
+        s = s.replace("\n", " ").replace("\r", " ").replace("\t", " ")
+        s = _re.sub(r"\s+", " ", s)
+        s = _re.sub(r"\s*[.;,]\s*", "; ", s)
+        s = s.replace("exame de rotina", "rotina")
+        s = _re.sub(r"^[;.\s]+|[;.\s]+$", "", s)
+        s = _re.sub(r"\s*;\s*", "; ", s)
+        s = _re.sub(r"^[;.\s]+|[;.\s]+$", "", s)
+        return s
+
+    for col_texto in ["_obs", "_indicacao", "_hipotese"]:
+        if col_texto in df.columns:
+            df[col_texto] = df[col_texto].apply(_norm_texto)
+
     df["Distrito"] = df.apply(lambda r: buscar_distrito(r["Data_cadastro"], r["Cidade"]), axis=1)
     _dist_map = {}
     for _, _, mun, dist, _ in LOCAIS:
