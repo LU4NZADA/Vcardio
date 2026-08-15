@@ -43,7 +43,8 @@ class DashboardService:
         self.calcular_indicadores()
         self.gerar_alertas()
         self.indicadores["n_total"] = len(self.df_original)
-        self.indicadores["n_muns_total"] = self.df_original["Cidade"].nunique()
+        mun_col = "Municipio_Coleta" if "Municipio_Coleta" in self.df_original.columns else "Cidade"
+        self.indicadores["n_muns_total"] = self.df_original[mun_col].nunique()
         return self.df_filtrado, self.indicadores, self.alertas
 
     def render_abas(self, df, ind):

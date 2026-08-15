@@ -27,7 +27,8 @@ def calcular_indicadores(df):
     ind = {}
     n = len(df)
     ind["n"] = n
-    ind["n_muns"] = df["Cidade"].nunique()
+    mun_col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    ind["n_muns"] = df[mun_col].nunique()
     ind["avg_age"] = round(df["idade"].mean(), 1) if n else 0
     ind["alt_pct"] = round(100 * (df["diag_cat"] != "Normal").mean(), 1) if n else 0
 
