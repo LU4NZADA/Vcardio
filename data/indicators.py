@@ -211,16 +211,36 @@ def calcular_indicadores(df):
     # que passava no filtro ".ne('')" e era contado como uma hipotese
     #/indicacao real. Agora checamos ".notna()" primeiro para excluir
     # de fato os registros sem valor preenchido.
+    import re as _re
+
+    def _norm_text(s):
+        """Normaliza texto clinico: lowercase, separadores, pontuacao, espacos."""
+        if pd.isna(s) or str(s).strip() == "":
+            return ""
+        s = str(s).strip().lower()
+        s = s.replace("\n", " ").replace("\r", " ").replace("\t", " ")
+        s = _re.sub(r"\s+", " ", s)
+        s = _re.sub(r"\s*[.;,]\s*", "; ", s)
+        s = s.replace("exame de rotina", "rotina")
+        s = _re.sub(r"^[;.\s]+|[;.\s]+$", "", s)
+        s = _re.sub(r"\s*;\s*", "; ", s)
+        s = _re.sub(r"^[;.\s]+|[;.\s]+$", "", s)
+        return s
+
     hip_df = df[df["_hipotese"].notna() & df["_hipotese"].astype(str).str.strip().ne("")]
     if len(hip_df) > 0:
-        hip_vc = _value_counts_rename(hip_df["_hipotese"], "Hipotese", "Frequencia", head=20)
+        hip_norm = hip_df["_hipotese"].apply(_norm_text)
+        hip_norm = hip_norm[hip_norm.ne("")]
+        hip_vc = _value_counts_rename(hip_norm, "Hipotese", "Frequencia", head=20)
         ind["hipoteses_freq"] = hip_vc
     else:
         ind["hipoteses_freq"] = pd.DataFrame()
 
     ind_df = df[df["_indicacao"].notna() & df["_indicacao"].astype(str).str.strip().ne("")]
     if len(ind_df) > 0:
-        ind_vc = _value_counts_rename(ind_df["_indicacao"], "Indicacao", "Frequencia", head=20)
+        ind_norm = ind_df["_indicacao"].apply(_norm_text)
+        ind_norm = ind_norm[ind_norm.ne("")]
+        ind_vc = _value_counts_rename(ind_norm, "Indicacao", "Frequencia", head=20)
         ind["indicacoes_freq"] = ind_vc
     else:
         ind["indicacoes_freq"] = pd.DataFrame()
