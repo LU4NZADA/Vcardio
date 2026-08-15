@@ -9,7 +9,8 @@ def _init_session_defaults(df: pd.DataFrame):
     if "filtros_inicializados" in st.session_state:
         return
     st.session_state.filtros_inicializados = True
-    st.session_state.filtro_mun = sorted(df["Cidade"].dropna().unique().tolist())
+    mun_init = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    st.session_state.filtro_mun = sorted(df[mun_init].dropna().unique().tolist())
     st.session_state.filtro_sex = ["Feminino", "Masculino", "Nao especificado"]
     st.session_state.filtro_diag = list(DIAG_COLORS.keys())
     st.session_state.filtro_hip = "Todos"
@@ -25,7 +26,8 @@ def _init_session_defaults(df: pd.DataFrame):
 
 
 def _limpar_filtros(df: pd.DataFrame):
-    st.session_state.filtro_mun = sorted(df["Cidade"].dropna().unique().tolist())
+    mun_init = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    st.session_state.filtro_mun = sorted(df[mun_init].dropna().unique().tolist())
     st.session_state.filtro_sex = ["Feminino", "Masculino", "Nao especificado"]
     st.session_state.filtro_diag = list(DIAG_COLORS.keys())
     st.session_state.filtro_hip = "Todos"
@@ -46,7 +48,8 @@ def render_filtros(df_original: pd.DataFrame) -> dict:
         if st.button("Limpar todos os filtros", use_container_width=True, type="secondary"):
             _limpar_filtros(df_original)
         st.divider()
-        municipios = sorted(df_original["Cidade"].dropna().unique().tolist())
+        mun_col = "Municipio_Coleta" if "Municipio_Coleta" in df_original.columns else "Cidade"
+        municipios = sorted(df_original[mun_col].dropna().unique().tolist())
         filtros_mun = st.multiselect("Municipio", options=municipios, key="filtro_mun")
         if filtros_mun:
             muns_norm = [_norm(m) for m in filtros_mun]
