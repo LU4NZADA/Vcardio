@@ -45,7 +45,8 @@ def calcular_indicadores(df):
     ind["ano_counts"] = _value_counts_rename(df["ano"], "Ano", sort_index=True)
     ind["faixa_counts"] = _value_counts_rename(df["faixa"], "Faixa", sort_index=True)
     ind["diag_counts"] = _value_counts_rename(df["diag_cat"], "Diagnostico")
-    ind["top_municipios"] = _value_counts_rename(df["Cidade"], "Municipio", head=15)
+    mun_demo_col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    ind["top_municipios"] = _value_counts_rename(df[mun_demo_col], "Municipio", head=15)
 
     saz = df.groupby("mes_nome").size().reset_index(name="Qtd")
     saz["ord"] = saz["mes_nome"].map({v: k for k, v in MESES_PT.items()})

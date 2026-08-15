@@ -92,13 +92,9 @@ def render_filtros(df_original: pd.DataFrame) -> dict:
 def aplicar_filtros(df: pd.DataFrame, filtros: dict) -> pd.DataFrame:
     df = df.copy()
     muns_sel = filtros.get("mun", [])
-    if "Cidade" in df.columns and muns_sel:
-        muns_norm = [_norm(m) for m in muns_sel]
-        distritos_mun = [d for _, _, m, d, _ in LOCAIS if _norm(m) in muns_norm]
-        mask = df["Cidade"].apply(lambda c: _norm(c) in muns_norm)
-        if distritos_mun:
-            mask = mask | df["Distrito"].isin(distritos_mun)
-        df = df[mask]
+    if muns_sel:
+        col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+        df = df[df[col].isin(muns_sel)]
     if "Sexo" in df.columns:
         df = df[df["Sexo"].isin(filtros.get("sex", []))]
     if "diag_cat" in df.columns:
