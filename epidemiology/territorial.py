@@ -9,12 +9,14 @@ from constants_locais import distrito_para_municipio
 
 
 def risco_territorial(df, min_exames=1):
-    """Risco territorial por municipio (cidade de origem)."""
-    risco = (df.groupby("Cidade")
+    """Risco territorial por municipio (local do exame)."""
+    col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    risco = (df.groupby(col)
              .agg(total=("diag_cat", "count"),
                   alterados=("diag_cat", lambda x: (x != "Normal").sum()),
                   idade_media=("idade", "mean"))
              .reset_index())
+    risco.rename(columns={col: "Cidade"}, inplace=True)
     risco = risco[risco["total"] >= min_exames].copy()
     risco["pct"] = (risco["alterados"] / risco["total"] * 100).round(1)
     risco["idade_media"] = risco["idade_media"].round(1)
