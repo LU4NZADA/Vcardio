@@ -141,14 +141,17 @@ def calcular_distancias_distritos(df):
                 visitados.add(melhor)
                 nao_visitados.discard(melhor)
 
-    # Exames por local (distritos) para compatibilidade
+    # Exames por local (distritos) - conta do DataFrame real
     exames_por_local = []
-    for _, _, mun, dist, ecg in LOCAIS:
-        if int(ecg) > 0:
+    if "Distrito" in df.columns:
+        dist_real = df[df["Distrito"].ne("")].groupby("Distrito").size().reset_index(name="exames")
+        for _, row in dist_real.iterrows():
+            d = row["Distrito"]
+            mun = _distrito_para_municipio(d) or d
             exames_por_local.append({
-                "distrito": dist,
+                "distrito": d,
                 "municipio": mun.strip().title(),
-                "exames": int(ecg),
+                "exames": int(row["exames"]),
             })
 
     return {
