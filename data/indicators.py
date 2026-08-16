@@ -94,17 +94,22 @@ def calcular_indicadores(df):
     mapa.rename(columns={"total": "exames"}, inplace=True)
     ind["mapa_dados"] = mapa
     ind["risco_distrito"] = risco_territorial_distrito(df)
-    # Mapa agregado por municipio (todos os distritos de um municipio somados)
-    risco_dist = ind["risco_distrito"].copy()
-    if not risco_dist.empty:
-        mapa_agg = risco_dist.groupby("Municipio").agg(
-            exames=("total", "sum"),
-            alterados=("alterados", "sum"),
-            lat=("lat", "first"),
-            lon=("lon", "first"),
+    # Mapa agregado por Municipio_Coleta (local real do exame)
+    mc = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    df_mapa = df[df[mc].ne("")].copy()
+    if not df_mapa.empty:
+        from constants import MUN_COORDS as _MC
+        from constants_locais import _norm as _n
+        mapa_agg = df_mapa.groupby(mc).agg(
+            exames=("diag_cat", "count"),
+            alterados=("diag_cat", lambda x: (x != "Normal").sum()),
         ).reset_index()
         mapa_agg["pct"] = round(100 * mapa_agg["alterados"] / mapa_agg["exames"], 1)
-        mapa_agg.rename(columns={"Municipio": "Cidade"}, inplace=True)
+        mapa_agg.rename(columns={mc: "Cidade"}, inplace=True)
+        # Coordenadas
+        coords_map = {_n(k): v for k, v in _MC.items()}
+        mapa_agg["lat"] = mapa_agg["Cidade"].map(lambda c: coords_map.get(_n(c), (None, None))[0])
+        mapa_agg["lon"] = mapa_agg["Cidade"].map(lambda c: coords_map.get(_n(c), (None, None))[1])
         ind["mapa_distrito_dados"] = mapa_agg
     else:
         ind["mapa_distrito_dados"] = pd.DataFrame()
