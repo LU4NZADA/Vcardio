@@ -122,12 +122,8 @@ def render_ficha_distrito(df, distrito):
 
 def render_ficha_municipio(df, municipio):
     """Ficha completa de um municipio visitado."""
-    mn = _norm(municipio)
-    distritos_do_mun = [d for _, _, m, d, _ in LOCAIS if _norm(m) == mn]
-    mask = df["Cidade"].apply(_norm).eq(mn)
-    for dist in distritos_do_mun:
-        mask = mask | df["Distrito"].eq(dist)
-    mun_df = df[mask].copy()
+    col = "Municipio_Coleta" if "Municipio_Coleta" in df.columns else "Cidade"
+    mun_df = df[df[col] == municipio].copy()
     n = len(mun_df)
     if n == 0:
         st.warning(f"Nenhum exame encontrado para {municipio}.")
