@@ -278,25 +278,14 @@ def render(df, ind):
 
     st.markdown("---")
 
-    tipo_ficha = st.radio(
-        "Tipo de ficha", ["Municipio", "Distrito"], horizontal=True, key="tipo_ficha"
-    )
-
-    if tipo_ficha == "Municipio":
-        sub_header("Ficha detalhada do municipio visitado")
-        muns_ok = []
-        for _, _, m, _, e in LOCAIS:
-            mt = m.strip().title()
-            if int(e) > 0 and mt not in muns_ok:
-                muns_ok.append(mt)
-        muns_ok.sort()
-        mun_sel = st.selectbox("Selecione o municipio", muns_ok, key="ficha_mun")
-        if mun_sel:
-            render_ficha_municipio(df, mun_sel)
-    else:
-        sub_header("Ficha detalhada do distrito")
-        distritos_lista = sorted([d for d in df["Distrito"].unique().tolist() if d and d.strip()])
-        dist_sel = st.selectbox("Selecione o distrito", distritos_lista, key="ficha_dist")
-        if dist_sel:
-            render_ficha_distrito(df, dist_sel)
+    sub_header("Ficha detalhada do municipio visitado")
+    muns_ok = []
+    for _, _, m, _, e in LOCAIS:
+        mt = m.strip().title()
+        if int(e) > 0 and mt not in muns_ok:
+            muns_ok.append(mt)
+    muns_ok.sort()
+    mun_sel = st.selectbox("Selecione o municipio", muns_ok, key="ficha_mun")
+    if mun_sel:
+        render_ficha_municipio(df, mun_sel)
 
