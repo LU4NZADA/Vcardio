@@ -20,7 +20,7 @@ def render(df, ind):
         ("red", "Total estimado", f"{dist['total_estimado_km']:,.0f} km",
          "ida e volta para todos os locais"),
         ("amber", "Percurso minimo", f"{dist['distancia_minima_percurso_km']:,.0f} km",
-         "rota otimizada (MST)"),
+         "ida e volta (MST)"),
         ("blue", "Media por local", f"{dist['media_km_por_local']:,.0f} km",
          "ida e volta media"),
         ("purple", "Locais visitados", f"{dist['total_locais']}",
