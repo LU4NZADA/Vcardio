@@ -81,7 +81,7 @@ def grafico_mapa_distritos(dist):
             lons.extend([base_coords[1], m["lon"], None])
 
     if lats:
-        fig.add_trace(go.Scattermapbox(
+        fig.add_trace(go.Scattermap(
             lat=lats, lon=lons, mode="lines",
             line=dict(width=1, color="rgba(226,75,74,0.3)"),
             hoverinfo="skip", showlegend=False,
@@ -89,7 +89,7 @@ def grafico_mapa_distritos(dist):
 
     # Pontos dos municipios visitados
     if muns:
-        fig.add_trace(go.Scattermapbox(
+        fig.add_trace(go.Scattermap(
             lat=[m["lat"] for m in muns],
             lon=[m["lon"] for m in muns],
             mode="markers",
@@ -104,7 +104,7 @@ def grafico_mapa_distritos(dist):
 
     # Base (Diamantina)
     if base_coords:
-        fig.add_trace(go.Scattermapbox(
+        fig.add_trace(go.Scattermap(
             lat=[base_coords[0]], lon=[base_coords[1]], mode="markers+text",
             marker=dict(size=18, color="#e8c547", symbol="star"),
             text=[f"BASE: {cidade_base}"],
@@ -127,7 +127,7 @@ def grafico_mapa_distritos(dist):
         center_lat, center_lon = -17.5, -42.5
 
     fig.update_layout(
-        mapbox=dict(
+        map=dict(
             style="carto-darkmatter",
             center=dict(lat=center_lat, lon=center_lon), zoom=7,
         ),
