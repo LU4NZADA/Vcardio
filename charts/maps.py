@@ -1,5 +1,5 @@
 """
-Mapas Scattermapbox com hover rico e legenda de cores.
+Mapas Scattermap com hover rico e legenda de cores.
 """
 
 import plotly.graph_objects as go
@@ -25,7 +25,7 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
 
     fig = go.Figure()
 
-    fig.add_trace(go.Scattermapbox(
+    fig.add_trace(go.Scattermap(
         lat=mp["lat"], lon=mp["lon"], mode="markers+text",
         marker=dict(size=mp["size"], color=mp["cor"], opacity=0.85, sizemode="area"),
         text=mp["Cidade"], textposition="top right",
@@ -63,7 +63,7 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
     )
 
     fig.update_layout(
-        mapbox=dict(
+        map=dict(
             style="carto-darkmatter",
             center=dict(lat=-17.5, lon=-42.5), zoom=6.5,
         ),
@@ -102,7 +102,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
     fig = go.Figure()
 
     if cidade_destaque:
-        fig.add_trace(go.Scattermapbox(
+        fig.add_trace(go.Scattermap(
             lat=mp["lat"], lon=mp["lon"], mode="markers+text",
             marker=dict(size=mp["size"], color="#e24b4a", opacity=0.35, sizemode="area"),
             text=mp["Cidade"], textposition="top right",
@@ -124,7 +124,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
         else:
             n_exames = 0
 
-        fig.add_trace(go.Scattermapbox(
+        fig.add_trace(go.Scattermap(
             lat=[lat_d], lon=[lon_d], mode="markers+text",
             marker=dict(size=45, color="#e8c547", opacity=1.0, sizemode="area"),
             text=[f"{cidade_destaque} ({n_exames} exames)"],
@@ -140,7 +140,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
         center = dict(lat=lat_d, lon=lon_d)
         zoom = 11
     else:
-        fig.add_trace(go.Scattermapbox(
+        fig.add_trace(go.Scattermap(
             lat=mp["lat"], lon=mp["lon"], mode="markers+text",
             marker=dict(size=mp["size"], color="#e24b4a", opacity=0.8, sizemode="area"),
             text=mp["Cidade"], textposition="top right",
@@ -157,7 +157,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
         zoom = 6.5
 
     fig.update_layout(
-        mapbox=dict(
+        map=dict(
             style="carto-darkmatter",
             center=center, zoom=zoom,
         ),
