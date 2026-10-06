@@ -1,5 +1,5 @@
 from pages import (
     geral, demografia, ecg, municipios,
-    comorbidades, correlacoes, clinica, dados,
+    comorbidades, correlacoes, dados,
     distancias, sobre
 )

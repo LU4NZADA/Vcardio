@@ -50,13 +50,13 @@ class DashboardService:
     def render_abas(self, df, ind):
         from pages import (
             geral, demografia, ecg, comorbidades as comorb_page,
-            correlacoes, municipios, clinica, dados, distancias, sobre,
+            correlacoes, municipios, dados, distancias, sobre,
         )
 
         tabs = st.tabs([
             "Geral", "Demografia", "Arritmias", "Bloqueios",
             "ECG", "Comorbidades", "Correlacoes", "Municipios",
-            "Distancias", "Clinica", "Dados", "Sobre",
+            "Distancias", "Dados", "Sobre",
         ])
 
         with tabs[0]:
@@ -78,8 +78,6 @@ class DashboardService:
         with tabs[8]:
             distancias.render(df, ind)
         with tabs[9]:
-            clinica.render(df, ind)
-        with tabs[10]:
             dados.render(df, ind)
-        with tabs[11]:
+        with tabs[10]:
             sobre.render()
