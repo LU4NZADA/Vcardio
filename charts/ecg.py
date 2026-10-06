@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from charts.base import configurar_layout
 
 
-def achados_bar(df_ach, title, color="#e24b4a"):
+def achados_bar(df_ach, title, color="#2969BD"):
     if df_ach.empty:
         return None
     fig = go.Figure()
@@ -17,20 +17,20 @@ def achados_bar(df_ach, title, color="#e24b4a"):
         orientation="h",
         marker=dict(
             color=df_ach["%"],
-            colorscale=[[0, "#21262d"], [0.3, "#30363d"], [0.6, color], [1, color]],
+            colorscale=[[0, "#eef3f9"], [0.3, "#dbe4ee"], [0.6, color], [1, color]],
             showscale=True,
             colorbar=dict(
-                title=dict(text="%", font=dict(color="#8b949e", size=10)),
-                tickfont=dict(color="#8b949e", size=9),
+                title=dict(text="%", font=dict(color="#64707D", size=10)),
+                tickfont=dict(color="#64707D", size=9),
                 len=0.6, thickness=12,
                 bgcolor="rgba(0,0,0,0)",
-                bordercolor="#30363d",
+                bordercolor="#cfd6df",
             ),
             cornerradius=4, line=dict(width=0),
         ),
         text=df_ach["Casos"],
         textposition="outside",
-        textfont=dict(size=11, color="#c9d1d9"),
+        textfont=dict(size=11, color="#3A4453"),
         customdata=df_ach["%"],
         hovertemplate=(
             "<b>%{y}</b><br>"
@@ -52,7 +52,7 @@ def achados_por_sexo(matrix_df, title):
     )
     fig = px.bar(
         melted, x="Achado", y="Qtd", color="Sexo", barmode="group",
-        color_discrete_map={"Feminino": "#e24b4a", "Masculino": "#378add"},
+        color_discrete_map={"Feminino": "#D64550", "Masculino": "#2969BD"},
         title=title,
     )
     fig.update_traces(
@@ -65,7 +65,7 @@ def achados_por_sexo(matrix_df, title):
     )
     configurar_layout(
         fig, height=360,
-        legend=dict(font_size=10, orientation="h", y=-0.2, font_color="#8b949e"),
+        legend=dict(font_size=10, orientation="h", y=-0.2, font_color="#64707D"),
     )
     fig.update_xaxes(tickangle=20)
     return fig
@@ -75,8 +75,8 @@ def achados_por_faixa(matrix_df, title, colorscale=None):
     if matrix_df.empty:
         return None
     if colorscale is None:
-        colorscale = [[0, "#0d1117"], [0.25, "#1a1f2e"], [0.5, "#30363d"],
-                      [0.75, "#ba7517"], [1, "#e24b4a"]]
+        colorscale = [[0, "#f2f7fc"], [0.25, "#cfe3f4"], [0.5, "#9cc3e8"],
+                      [0.75, "#D9902E"], [1, "#D64550"]]
     fig = px.imshow(
         matrix_df, text_auto=True, aspect="auto",
         color_continuous_scale=colorscale, title=title,
@@ -99,8 +99,8 @@ def comorb_prevalencia(prev_df, title):
     data = prev_df.drop(columns="N", errors="ignore")
     fig = px.imshow(
         data.T, text_auto=".1f", aspect="auto",
-        color_continuous_scale=[[0, "#0d1117"], [0.25, "#1a1f2e"],
-                                [0.5, "#30363d"], [0.75, "#ba7517"], [1, "#e24b4a"]],
+        color_continuous_scale=[[0, "#f2f7fc"], [0.25, "#cfe3f4"],
+                                [0.5, "#9cc3e8"], [0.75, "#D9902E"], [1, "#D64550"]],
         title=title,
     )
     fig.update_traces(
@@ -154,14 +154,14 @@ def treemap_achados(achados_dict, title="Mapa de achados ECG"):
     )
 
     paleta = {
-        "Arritmias": "#e24b4a",
-        "Bloqueios": "#378add",
-        "Repolarizacao": "#ba7517",
-        "Sobrecargas": "#7f77dd",
-        "Fibroses": "#d85a30",
-        "Baixa Voltagem": "#8b949e",
-        "Conducao": "#39d2c0",
-        "Eixo": "#e8c547",
+        "Arritmias": "#D64550",
+        "Bloqueios": "#2969BD",
+        "Repolarizacao": "#D9902E",
+        "Sobrecargas": "#6D5BCA",
+        "Fibroses": "#E36B2F",
+        "Baixa Voltagem": "#8B9BB4",
+        "Conducao": "#0FA3B1",
+        "Eixo": "#E8C547",
     }
 
     fig = px.treemap(
@@ -179,8 +179,8 @@ def treemap_achados(achados_dict, title="Mapa de achados ECG"):
             "<extra></extra>"
         ),
         textinfo="label+value+percent parent",
-        textfont=dict(size=12, color="#e6edf3"),
-        marker=dict(cornerradius=4, line=dict(width=2, color="#0d1117")),
+        textfont=dict(size=12, color="#ffffff"),
+        marker=dict(cornerradius=4, line=dict(width=2, color="#ffffff")),
     )
     configurar_layout(
         fig, height=500, title_size=13,

@@ -17,13 +17,13 @@ def risco_territorial(risco_df):
     cores = []
     for p in risco["pct"]:
         if p > 70:
-            cores.append("#e24b4a")
+            cores.append("#D64550")
         elif p > 50:
-            cores.append("#ba7517")
+            cores.append("#D9902E")
         elif p > 30:
-            cores.append("#e8c547")
+            cores.append("#E8C547")
         else:
-            cores.append("#639922")
+            cores.append("#2E9E5B")
 
     fig = go.Figure()
     fig.add_trace(go.Bar(
@@ -32,7 +32,7 @@ def risco_territorial(risco_df):
         marker=dict(color=cores, cornerradius=4, line=dict(width=0)),
         text=risco["pct"].apply(lambda x: f"{x}%"),
         textposition="outside",
-        textfont=dict(size=11, color="#c9d1d9"),
+        textfont=dict(size=11, color="#3A4453"),
         customdata=risco[["total", "alterados", "idade_media"]].values,
         hovertemplate=(
             "<b>%{y}</b><br>"
@@ -44,8 +44,8 @@ def risco_territorial(risco_df):
         ),
     ))
     fig.add_vline(
-        x=50, line_dash="dash", line_color="rgba(226,75,74,0.5)",
-        annotation_text="Limiar 50%", annotation_font_color="#e24b4a",
+        x=50, line_dash="dash", line_color="rgba(214,69,80,0.5)",
+        annotation_text="Limiar 50%", annotation_font_color="#D64550",
     )
     fig.update_yaxes(categoryorder="total ascending")
     configurar_layout(
@@ -57,10 +57,10 @@ def risco_territorial(risco_df):
 
     # Legenda de cores
     legenda = (
-        '<span style="color:#639922">● Baixo (&lt;30%)</span>  '
-        '<span style="color:#e8c547">● Moderado (30-50%)</span>  '
-        '<span style="color:#ba7517">● Alto (50-70%)</span>  '
-        '<span style="color:#e24b4a">● Critico (&gt;70%)</span>'
+        '<span style="color:#2E9E5B">● Baixo (&lt;30%)</span>  '
+        '<span style="color:#E8C547">● Moderado (30-50%)</span>  '
+        '<span style="color:#D9902E">● Alto (50-70%)</span>  '
+        '<span style="color:#D64550">● Critico (&gt;70%)</span>'
     )
     return fig, legenda
 
@@ -77,13 +77,13 @@ def comorb_municipio(cm_df, label):
         orientation="h",
         marker=dict(
             color=cm["Pct"],
-            colorscale=[[0, "#21262d"], [0.5, "#ba7517"], [1, "#e24b4a"]],
+            colorscale=[[0, "#eef3f9"], [0.5, "#D9902E"], [1, "#D64550"]],
             showscale=False,
             cornerradius=4, line=dict(width=0),
         ),
         text=cm["Pct"].apply(lambda x: f"{x}%"),
         textposition="outside",
-        textfont=dict(size=11, color="#c9d1d9"),
+        textfont=dict(size=11, color="#3A4453"),
         customdata=cm[["total", "positivos"]].values,
         hovertemplate=(
             "<b>%{y}</b><br>"

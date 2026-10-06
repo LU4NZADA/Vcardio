@@ -12,8 +12,8 @@ def render(df, ind):
 
     sub_header("Heatmap: achados x sexo")
     fig = heatmap_generic(ind["hm_achado_sexo"], "Achados por sexo",
-                          [[0, "#0d1117"], [0.25, "#1a1f2e"], [0.5, "#30363d"],
-                           [0.75, "#ba7517"], [1, "#e24b4a"]])
+                          [[0, "#f2f7fc"], [0.25, "#cfe3f4"], [0.5, "#9cc3e8"],
+                           [0.75, "#D9902E"], [1, "#D64550"]])
     if fig:
         st.plotly_chart(fig, use_container_width=True)
 

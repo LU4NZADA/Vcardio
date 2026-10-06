@@ -33,19 +33,19 @@ def render(df, ind):
         labels=["Feminino", "Masculino"],
         values=[n_fem, n_masc],
         hole=0.6,
-        marker=dict(colors=["#e24b4a", "#378add"]),
+        marker=dict(colors=["#D64550", "#2969BD"]),
         textinfo="label+percent",
-        textfont=dict(size=11, color="#c9d1d9"),
+        textfont=dict(size=11, color="#3A4453"),
     )])
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#161b22",
-        font=dict(color="#c9d1d9", family="IBM Plex Mono"),
+        plot_bgcolor="#f7f8fa",
+        font=dict(color="#1F2430", family="IBM Plex Mono"),
         height=300,
         margin=dict(l=0, r=0, t=30, b=0),
         showlegend=True,
-        legend=dict(font=dict(color="#8b949e")),
-        title=dict(text="Distribuicao por sexo", font=dict(color="#e6edf3")),
+        legend=dict(font=dict(color="#64707D")),
+        title=dict(text="Distribuicao por sexo", font=dict(color="#1F2430")),
     )
     st.plotly_chart(fig, use_container_width=True)
 
@@ -95,7 +95,7 @@ def render(df, ind):
             y=dist_counts["total"].tolist(),
             text=dist_counts["total"].tolist(),
             textposition="outside",
-            marker=dict(color="#378add", cornerradius=4),
+            marker=dict(color="#2969BD", cornerradius=4),
             name="Total",
         ))
         fig.add_trace(go.Bar(
@@ -103,18 +103,18 @@ def render(df, ind):
             y=dist_counts["alterados"].tolist(),
             text=dist_counts["alterados"].tolist(),
             textposition="outside",
-            marker=dict(color="#e24b4a", cornerradius=4),
+            marker=dict(color="#D64550", cornerradius=4),
             name="Alterados",
         ))
         fig.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="#161b22",
-            font=dict(color="#c9d1d9", family="IBM Plex Mono"),
+            plot_bgcolor="#f7f8fa",
+            font=dict(color="#1F2430", family="IBM Plex Mono"),
             height=350,
             margin=dict(l=0, r=20, t=30, b=80),
             barmode="overlay",
             xaxis=dict(tickangle=-45),
-            legend=dict(font=dict(color="#8b949e")),
+            legend=dict(font=dict(color="#64707D")),
         )
         st.plotly_chart(fig, use_container_width=True)
 

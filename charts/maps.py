@@ -15,8 +15,8 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
 
     mp["size"] = mp["exames"].apply(lambda x: max(16, min(x * 2, 55)))
     mp["cor"] = mp["pct"].apply(
-        lambda p: "#e24b4a" if p > 70 else "#ba7517" if p > 50
-        else "#e8c547" if p > 30 else "#639922"
+        lambda p: "#D64550" if p > 70 else "#D9902E" if p > 50
+        else "#E8C547" if p > 30 else "#2E9E5B"
     )
     mp["risco"] = mp["pct"].apply(
         lambda p: "Critico" if p > 70 else "Alto" if p > 50
@@ -29,7 +29,7 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
         lat=mp["lat"], lon=mp["lon"], mode="markers+text",
         marker=dict(size=mp["size"], color=mp["cor"], opacity=0.85, sizemode="area"),
         text=mp["Cidade"], textposition="top right",
-        textfont=dict(size=9, color="#c9d1d9", family="IBM Plex Mono"),
+        textfont=dict(size=9, color="#3A4453", family="IBM Plex Mono"),
         customdata=mp[["exames", "alterados", "pct", "risco"]].values,
         hovertemplate=(
             "<b>%{text}</b><br>"
@@ -46,17 +46,17 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
         annotations=[
             dict(
                 text=(
-                    '<span style="color:#639922">Baixo (&lt;30%)</span><br>'
-                    '<span style="color:#e8c547">Moderado (30-50%)</span><br>'
-                    '<span style="color:#ba7517">Alto (50-70%)</span><br>'
-                    '<span style="color:#e24b4a">Critico (&gt;70%)</span>'
+                    '<span style="color:#2E9E5B">Baixo (&lt;30%)</span><br>'
+                    '<span style="color:#E8C547">Moderado (30-50%)</span><br>'
+                    '<span style="color:#D9902E">Alto (50-70%)</span><br>'
+                    '<span style="color:#D64550">Critico (&gt;70%)</span>'
                 ),
                 x=0.01, y=0.99, xref="paper", yref="paper",
                 showarrow=False,
-                bgcolor="rgba(13,17,23,0.85)",
-                bordercolor="#30363d", borderwidth=1,
+                bgcolor="rgba(255,255,255,0.92)",
+                bordercolor="#cfd6df", borderwidth=1,
                 borderpad=8,
-                font=dict(size=10, family="IBM Plex Mono", color="#c9d1d9"),
+                font=dict(size=10, family="IBM Plex Mono", color="#3A4453"),
                 align="left",
             ),
         ],
@@ -64,13 +64,13 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
 
     fig.update_layout(
         map=dict(
-            style="carto-darkmatter",
+            style="carto-positron",
             center=dict(lat=-17.5, lon=-42.5), zoom=6.5,
         ),
         **PLOTLY_THEME, height=560, margin=dict(l=0, r=0, t=10, b=0),
         hoverlabel=dict(
-            bgcolor="#161b22", bordercolor="#30363d",
-            font_size=12, font_color="#e6edf3", font_family="IBM Plex Mono",
+            bgcolor="#ffffff", bordercolor="#cfd6df",
+            font_size=12, font_color="#1F2430", font_family="IBM Plex Mono",
         ),
     )
     return fig
@@ -104,9 +104,9 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
     if cidade_destaque:
         fig.add_trace(go.Scattermap(
             lat=mp["lat"], lon=mp["lon"], mode="markers+text",
-            marker=dict(size=mp["size"], color="#e24b4a", opacity=0.35, sizemode="area"),
+            marker=dict(size=mp["size"], color="#2969BD", opacity=0.35, sizemode="area"),
             text=mp["Cidade"], textposition="top right",
-            textfont=dict(size=8, color="#8b949e", family="IBM Plex Mono"),
+            textfont=dict(size=8, color="#64707D", family="IBM Plex Mono"),
             customdata=mp[["exames"]].values,
             hovertemplate=(
                 "<b>%{text}</b><br>"
@@ -142,9 +142,9 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
     else:
         fig.add_trace(go.Scattermap(
             lat=mp["lat"], lon=mp["lon"], mode="markers+text",
-            marker=dict(size=mp["size"], color="#e24b4a", opacity=0.8, sizemode="area"),
+            marker=dict(size=mp["size"], color="#2969BD", opacity=0.8, sizemode="area"),
             text=mp["Cidade"], textposition="top right",
-            textfont=dict(size=9, color="#c9d1d9", family="IBM Plex Mono"),
+            textfont=dict(size=9, color="#3A4453", family="IBM Plex Mono"),
             customdata=mp[["exames"]].values,
             hovertemplate=(
                 "<b>%{text}</b><br>"
@@ -158,7 +158,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
 
     fig.update_layout(
         map=dict(
-            style="carto-darkmatter",
+            style="carto-positron",
             center=center, zoom=zoom,
         ),
         **PLOTLY_THEME, height=460, margin=dict(l=0, r=0, t=10, b=0),

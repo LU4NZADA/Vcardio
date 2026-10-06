@@ -6,7 +6,7 @@ from charts.comorbidities import comorb_sexo, comorb_faixa, sexo_diag_crosstab
 
 def render(df, ind):
     sub_header("Comorbidades na amostra")
-    cores = ["#e24b4a", "#ba7517", "#8b949e", "#378add"]
+    cores = ["#D64550", "#D9902E", "#8B9BB4", "#2969BD"]
     cards = [(cor, lbl, val, pct) for (_, lbl, val, pct), cor in zip(ind["comorb_resumo"], cores)]
     render_comorb_cards(cards)
     sub_header("Comorbidades por sexo")

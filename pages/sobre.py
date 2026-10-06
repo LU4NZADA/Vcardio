@@ -9,43 +9,43 @@ def render():
     st.markdown("""
     <style>
     .sobre-hero {
-        background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
-        border: 1px solid #30363d;
+        background: linear-gradient(135deg, #2969BD 0%, #244A7C 100%);
+        border: 1px solid #1e5aa3;
         border-radius: 12px;
         padding: 40px;
         margin-bottom: 24px;
         text-align: center;
     }
     .sobre-hero h1 {
-        color: #e6edf3;
+        color: #ffffff;
         font-size: 28px;
         margin-bottom: 8px;
     }
     .sobre-hero .sub {
-        color: #e24b4a;
+        color: #cfe3f4;
         font-size: 14px;
         font-family: 'IBM Plex Mono', monospace;
         letter-spacing: 0.05em;
     }
     .sobre-hero .desc {
-        color: #8b949e;
+        color: #e8f0fa;
         font-size: 14px;
         max-width: 700px;
         margin: 20px auto 0;
         line-height: 1.7;
     }
     .sobre-card {
-        background: #161b22;
-        border: 1px solid #30363d;
+        background: #ffffff;
+        border: 1px solid #DEE3EA;
         border-radius: 10px;
         padding: 24px;
         margin-bottom: 16px;
     }
     .sobre-card h3 {
-        color: #e6edf3;
+        color: #1F2430;
         font-size: 16px;
         margin-bottom: 16px;
-        border-bottom: 2px solid #e24b4a;
+        border-bottom: 2px solid #2969BD;
         padding-bottom: 8px;
         display: inline-block;
     }
@@ -55,26 +55,26 @@ def render():
         gap: 12px;
     }
     .info-item {
-        background: #0d1117;
-        border: 1px solid #21262d;
+        background: #f7f8fa;
+        border: 1px solid #DEE3EA;
         border-radius: 8px;
         padding: 14px;
     }
     .info-item .label {
-        color: #8b949e;
+        color: #64707D;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         margin-bottom: 4px;
     }
     .info-item .valor {
-        color: #e6edf3;
+        color: #101828;
         font-size: 14px;
         font-weight: 600;
     }
     .lgpd-box {
-        background: #0d1117;
-        border: 1px solid #639922;
+        background: #f2faf5;
+        border: 1px solid #2E9E5B;
         border-radius: 10px;
         padding: 20px;
         display: flex;
@@ -83,17 +83,17 @@ def render():
     }
     .lgpd-icon {
         font-size: 36px;
-        color: #639922;
+        color: #2E9E5B;
         min-width: 50px;
         text-align: center;
     }
     .lgpd-text {
-        color: #8b949e;
+        color: #3A4453;
         font-size: 13px;
         line-height: 1.6;
     }
     .lgpd-text strong {
-        color: #639922;
+        color: #2E9E5B;
     }
     .tech-grid {
         display: grid;
@@ -101,19 +101,19 @@ def render():
         gap: 10px;
     }
     .tech-item {
-        background: #0d1117;
-        border: 1px solid #21262d;
+        background: #f7f8fa;
+        border: 1px solid #DEE3EA;
         border-radius: 8px;
         padding: 12px;
         text-align: center;
     }
     .tech-item .nome {
-        color: #e6edf3;
+        color: #1F2430;
         font-size: 13px;
         font-weight: 600;
     }
     .tech-item .det {
-        color: #8b949e;
+        color: #64707D;
         font-size: 11px;
         margin-top: 4px;
     }

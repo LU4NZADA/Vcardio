@@ -31,11 +31,11 @@ def grafico_rotas_distritos(dist):
         y=df["Local"], x=df["km"], orientation="h",
         marker=dict(
             color=df["km"],
-            colorscale=[[0, "#639922"], [0.5, "#ba7517"], [1, "#e24b4a"]],
+            colorscale=[[0, "#2E9E5B"], [0.5, "#D9902E"], [1, "#D64550"]],
             showscale=False, cornerradius=4, line=dict(width=0),
         ),
         text=df["km"].apply(lambda x: f"{x:,.0f} km"),
-        textposition="outside", textfont=dict(size=11, color="#c9d1d9"),
+        textposition="outside", textfont=dict(size=11, color="#3A4453"),
         hovertemplate=(
             "<b>%{y}</b><br>"
             "Distancia da base: <b>%{x:,.1f} km</b><br>"
@@ -83,7 +83,7 @@ def grafico_mapa_distritos(dist):
     if lats:
         fig.add_trace(go.Scattermap(
             lat=lats, lon=lons, mode="lines",
-            line=dict(width=1, color="rgba(226,75,74,0.3)"),
+            line=dict(width=1, color="rgba(41,105,189,0.35)"),
             hoverinfo="skip", showlegend=False,
         ))
 
@@ -95,7 +95,7 @@ def grafico_mapa_distritos(dist):
             mode="markers",
             marker=dict(
                 size=[max(8, min(20, m["exames"] / 5)) for m in muns],
-                color="#e24b4a", opacity=0.8,
+                color="#2969BD", opacity=0.8,
             ),
             text=[f"{m['municipio']} ({m['exames']} exames)" for m in muns],
             hovertemplate="<b>%{text}</b><extra></extra>",
@@ -128,12 +128,12 @@ def grafico_mapa_distritos(dist):
 
     fig.update_layout(
         map=dict(
-            style="carto-darkmatter",
+            style="carto-positron",
             center=dict(lat=center_lat, lon=center_lon), zoom=7,
         ),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#161b22",
-        font_color="#c9d1d9",
+        plot_bgcolor="#f7f8fa",
+        font_color="#1F2430",
         font_family="IBM Plex Mono",
         height=560,
         margin=dict(l=0, r=0, t=10, b=0),

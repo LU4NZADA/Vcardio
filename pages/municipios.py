@@ -39,7 +39,7 @@ def render_ficha_distrito(df, distrito):
     diag_counts.columns = ["Diagnostico", "Qtd"]
     cols_diag = st.columns(max(len(diag_counts), 1))
     for col, (_, row) in zip(cols_diag, diag_counts.iterrows()):
-        cor = DIAG_COLORS.get(row["Diagnostico"], "#8b949e")
+        cor = DIAG_COLORS.get(row["Diagnostico"], "#8B9BB4")
         pct = round(100 * row["Qtd"] / n, 1)
         with col:
             st.markdown(
@@ -59,7 +59,7 @@ def render_ficha_distrito(df, distrito):
             todos_achados.append(ach)
     if todos_achados:
         achados_completo = pd.concat(todos_achados).sort_values("Casos", ascending=False)
-        fig = achados_bar(achados_completo, f"Achados ECG - {distrito}", "#e24b4a")
+        fig = achados_bar(achados_completo, f"Achados ECG - {distrito}", "#2969BD")
         if fig:
             st.plotly_chart(fig, use_container_width=True)
         achados_tabela = achados_completo[["Achado", "Categoria", "Casos", "%"]].reset_index(drop=True)
@@ -69,7 +69,7 @@ def render_ficha_distrito(df, distrito):
         st.info("Nenhum achado ECG neste distrito.")
     sub_header("Comorbidades")
     comorb_data = []
-    cores = ["#e24b4a", "#ba7517", "#8b949e", "#378add"]
+    cores = ["#D64550", "#D9902E", "#8B9BB4", "#2969BD"]
     for (ccol, lbl), cor in zip(COMORB_COLS.items(), cores):
         if ccol in dist_df.columns:
             total = int(dist_df[ccol].sum())
@@ -81,7 +81,7 @@ def render_ficha_distrito(df, distrito):
             with col:
                 st.markdown(
                     f'<div class="comor-card"><div class="comor-val" style="color:{cor}">{pct}%</div>'
-                    f'<div style="font-size:13px;color:#c9d1d9">{total}</div>'
+                    f'<div style="font-size:13px;color:#3A4453">{total}</div>'
                     f'<div class="comor-lbl">{lbl}</div></div>',
                     unsafe_allow_html=True,
                 )
@@ -93,15 +93,15 @@ def render_ficha_distrito(df, distrito):
         y=faixa_counts["Qtd"].tolist(),
         text=faixa_counts["Qtd"].tolist(),
         textposition="outside",
-        marker=dict(color="#7f77dd", cornerradius=4, line=dict(width=0)),
+        marker=dict(color="#6D5BCA", cornerradius=4, line=dict(width=0)),
     ))
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#161b22",
-        font=dict(color="#c9d1d9", family="IBM Plex Mono"),
+        plot_bgcolor="#f7f8fa",
+        font=dict(color="#1F2430", family="IBM Plex Mono"),
         height=280,
         margin=dict(l=0, r=20, t=30, b=0),
-        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#e6edf3")),
+        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#1F2430")),
     )
     st.plotly_chart(fig, use_container_width=True)
     sub_header("Exames realizados")
@@ -147,7 +147,7 @@ def render_ficha_municipio(df, municipio):
     diag_counts.columns = ["Diagnostico", "Qtd"]
     cols_diag = st.columns(max(len(diag_counts), 1))
     for col, (_, row) in zip(cols_diag, diag_counts.iterrows()):
-        cor = DIAG_COLORS.get(row["Diagnostico"], "#8b949e")
+        cor = DIAG_COLORS.get(row["Diagnostico"], "#8B9BB4")
         pct = round(100 * row["Qtd"] / n, 1)
         with col:
             st.markdown(
@@ -167,7 +167,7 @@ def render_ficha_municipio(df, municipio):
             todos_achados.append(ach)
     if todos_achados:
         achados_completo = pd.concat(todos_achados).sort_values("Casos", ascending=False)
-        fig = achados_bar(achados_completo, f"Achados ECG - {municipio}", "#e24b4a")
+        fig = achados_bar(achados_completo, f"Achados ECG - {municipio}", "#2969BD")
         if fig:
             st.plotly_chart(fig, use_container_width=True)
         achados_tabela = achados_completo[["Achado", "Categoria", "Casos", "%"]].reset_index(drop=True)
@@ -177,7 +177,7 @@ def render_ficha_municipio(df, municipio):
         st.info("Nenhum achado ECG neste municipio.")
     sub_header("Comorbidades")
     comorb_data = []
-    cores = ["#e24b4a", "#ba7517", "#8b949e", "#378add"]
+    cores = ["#D64550", "#D9902E", "#8B9BB4", "#2969BD"]
     for (ccol, lbl), cor in zip(COMORB_COLS.items(), cores):
         if ccol in mun_df.columns:
             total = int(mun_df[ccol].sum())
@@ -189,7 +189,7 @@ def render_ficha_municipio(df, municipio):
             with col:
                 st.markdown(
                     f'<div class="comor-card"><div class="comor-val" style="color:{cor}">{pct}%</div>'
-                    f'<div style="font-size:13px;color:#c9d1d9">{total}</div>'
+                    f'<div style="font-size:13px;color:#3A4453">{total}</div>'
                     f'<div class="comor-lbl">{lbl}</div></div>',
                     unsafe_allow_html=True,
                 )
@@ -201,15 +201,15 @@ def render_ficha_municipio(df, municipio):
         y=faixa_counts["Qtd"].tolist(),
         text=faixa_counts["Qtd"].tolist(),
         textposition="outside",
-        marker=dict(color="#7f77dd", cornerradius=4, line=dict(width=0)),
+        marker=dict(color="#6D5BCA", cornerradius=4, line=dict(width=0)),
     ))
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#161b22",
-        font=dict(color="#c9d1d9", family="IBM Plex Mono"),
+        plot_bgcolor="#f7f8fa",
+        font=dict(color="#1F2430", family="IBM Plex Mono"),
         height=280,
         margin=dict(l=0, r=20, t=30, b=0),
-        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#e6edf3")),
+        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#1F2430")),
     )
     st.plotly_chart(fig, use_container_width=True)
     sub_header("Exames realizados")
@@ -263,7 +263,7 @@ def render(df, ind):
     sub_header("Municipio x Arritmia")
     fig = heatmap_generic(
         ind["mun_arr_matrix"], "Arritmias por municipio",
-        [[0, "#0d1117"], [0.5, "#30363d"], [1, "#e24b4a"]],
+        [[0, "#f2f7fc"], [0.5, "#e39aa1"], [1, "#D64550"]],
     )
     if fig:
         st.plotly_chart(fig, use_container_width=True)
@@ -271,7 +271,7 @@ def render(df, ind):
     sub_header("Municipio x Bloqueio")
     fig = heatmap_generic(
         ind["mun_blk_matrix"], "Bloqueios por municipio",
-        [[0, "#0d1117"], [0.5, "#30363d"], [1, "#378add"]],
+        [[0, "#f2f7fc"], [0.5, "#9cc3e8"], [1, "#2969BD"]],
     )
     if fig:
         st.plotly_chart(fig, use_container_width=True)

@@ -56,7 +56,7 @@ def _render_kpis_municipio(df, municipio):
     diag_counts.columns = ["Diagnostico", "Qtd"]
     cols_diag = st.columns(max(len(diag_counts), 1))
     for col, (_, row) in zip(cols_diag, diag_counts.iterrows()):
-        cor = DIAG_COLORS.get(row["Diagnostico"], "#8b949e")
+        cor = DIAG_COLORS.get(row["Diagnostico"], "#8B9BB4")
         pct = round(100 * row["Qtd"] / n, 1)
         with col:
             st.markdown(
@@ -77,7 +77,7 @@ def _render_kpis_municipio(df, municipio):
             todos_achados.append(ach)
     if todos_achados:
         achados_completo = pd.concat(todos_achados).sort_values("Casos", ascending=False)
-        fig = achados_bar(achados_completo, f"Achados ECG - {municipio}", "#e24b4a")
+        fig = achados_bar(achados_completo, f"Achados ECG - {municipio}", "#2969BD")
         if fig:
             st.plotly_chart(fig, use_container_width=True, key="geral_chart_1")
     else:
@@ -85,7 +85,7 @@ def _render_kpis_municipio(df, municipio):
 
     sub_header("Comorbidades")
     comorb_data = []
-    cores = ["#e24b4a", "#ba7517", "#8b949e", "#378add"]
+    cores = ["#D64550", "#D9902E", "#8B9BB4", "#2969BD"]
     for (ccol, lbl), cor in zip(COMORB_COLS.items(), cores):
         if ccol in mun_df.columns:
             total = int(mun_df[ccol].sum())
@@ -98,7 +98,7 @@ def _render_kpis_municipio(df, municipio):
                 st.markdown(
                     f"""<div class="comor-card">
                     <div class="comor-val" style="color:{cor}">{pct}%</div>
-                    <div style="font-size:13px;color:#c9d1d9">{total}</div>
+                    <div style="font-size:13px;color:#3A4453">{total}</div>
                     <div class="comor-lbl">{lbl}</div></div>""",
                     unsafe_allow_html=True,
                 )

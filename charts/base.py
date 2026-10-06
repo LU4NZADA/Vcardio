@@ -23,11 +23,11 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
         showlegend=showlegend,
         height=height,
         title_font_size=title_size,
-        title_font_color="#e6edf3",
+        title_font_color="#1F2430",
         margin=dict(l=0, r=20, t=50, b=0),
         hovermode="closest",
         dragmode="pan",
-        newshape=dict(line_color="#e24b4a"),
+        newshape=dict(line_color="#2969BD"),
     )
     if "title" in kw and isinstance(kw["title"], str):
         kw["title"] = t(kw["title"])
@@ -36,10 +36,10 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
 
     fig.update_layout(
         hoverlabel=dict(
-            bgcolor="#161b22",
-            bordercolor="#30363d",
+            bgcolor="#ffffff",
+            bordercolor="#cfd6df",
             font_size=12,
-            font_color="#e6edf3",
+            font_color="#1F2430",
             font_family="IBM Plex Mono",
             namelength=-1,
         )
@@ -47,7 +47,7 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
     return fig
 
 
-def bar_horizontal(df, x, y, text="", color="#e24b4a", title="", hover_extra=None):
+def bar_horizontal(df, x, y, text="", color="#2969BD", title="", hover_extra=None):
     custom = hover_extra if hover_extra else []
     fig = px.bar(
         df, x=x, y=y, orientation="h", text=text or x,
@@ -56,7 +56,7 @@ def bar_horizontal(df, x, y, text="", color="#e24b4a", title="", hover_extra=Non
     )
     fig.update_traces(
         textposition="outside",
-        textfont=dict(size=11, color="#c9d1d9", family="IBM Plex Mono"),
+        textfont=dict(size=11, color="#3A4453", family="IBM Plex Mono"),
         marker=dict(line=dict(width=0), cornerradius=4),
         hovertemplate=(
             "<b>%{y}</b><br>"
@@ -71,8 +71,8 @@ def bar_horizontal(df, x, y, text="", color="#e24b4a", title="", hover_extra=Non
 
 def heatmap_base(df, title="", colorscale=None, height_per_row=30):
     if colorscale is None:
-        colorscale = [[0, "#0d1117"], [0.25, "#1a1f2e"], [0.5, "#30363d"],
-                      [0.75, "#ba7517"], [1, "#e24b4a"]]
+        colorscale = [[0, "#f2f7fc"], [0.25, "#cfe3f4"], [0.5, "#9cc3e8"],
+                      [0.75, "#D9902E"], [1, "#D64550"]]
     fig = px.imshow(
         df, text_auto=True, aspect="auto",
         color_continuous_scale=colorscale, title=t(title),
@@ -97,16 +97,16 @@ def criar_dropdown(fig, botoes, titulo="Filtrar por:", y=1.15):
                 showactive=True,
                 x=0.0, xanchor="left",
                 y=y, yanchor="top",
-                bgcolor="#161b22",
-                bordercolor="#30363d",
-                font=dict(color="#c9d1d9", size=11, family="IBM Plex Mono"),
+                bgcolor="#ffffff",
+                bordercolor="#cfd6df",
+                font=dict(color="#3A4453", size=11, family="IBM Plex Mono"),
                 active=0,
             )
         ],
         annotations=[
             dict(
                 text=t(titulo), x=0.0, y=y + 0.06, xref="paper", yref="paper",
-                showarrow=False, font=dict(color="#8b949e", size=10, family="IBM Plex Mono"),
+                showarrow=False, font=dict(color="#64707D", size=10, family="IBM Plex Mono"),
             )
         ],
     )
@@ -115,7 +115,7 @@ def criar_dropdown(fig, botoes, titulo="Filtrar por:", y=1.15):
 
 def criar_range_slider(fig, visible=False):
     fig.update_xaxes(
-        rangeslider=dict(visible=visible, bgcolor="#161b22", bordercolor="#30363d"),
+        rangeslider=dict(visible=visible, bgcolor="#ffffff", bordercolor="#cfd6df"),
         rangeselector=dict(
             buttons=[
                 dict(count=3, label="3m", step="month", stepmode="backward"),
@@ -123,10 +123,10 @@ def criar_range_slider(fig, visible=False):
                 dict(count=1, label="1a", step="year", stepmode="backward"),
                 dict(step="all", label="Tudo"),
             ],
-            bgcolor="#161b22",
-            activecolor="#21262d",
-            bordercolor="#30363d",
-            font=dict(color="#c9d1d9", size=10),
+            bgcolor="#ffffff",
+            activecolor="#eaf1fa",
+            bordercolor="#cfd6df",
+            font=dict(color="#3A4453", size=10),
         ),
     )
     return fig

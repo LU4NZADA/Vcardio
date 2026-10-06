@@ -10,7 +10,7 @@ from charts.ecg import (
 def render_arritmias(df, ind):
     sub_header("Ranking de arritmias por tipo")
     fig = achados_bar(ind["achados"].get("Arritmias", pd.DataFrame()),
-                      "Arritmias", "#e24b4a")
+                      "Arritmias", "#D64550")
     if fig:
         st.plotly_chart(fig, use_container_width=True)
     else:
@@ -35,7 +35,7 @@ def render_arritmias(df, ind):
 def render_bloqueios(df, ind):
     sub_header("Ranking de bloqueios por tipo")
     fig = achados_bar(ind["achados"].get("Bloqueios", pd.DataFrame()),
-                      "Bloqueios", "#378add")
+                      "Bloqueios", "#2969BD")
     if fig:
         st.plotly_chart(fig, use_container_width=True)
     else:
@@ -48,7 +48,7 @@ def render_bloqueios(df, ind):
 
     sub_header("Bloqueios por faixa etaria")
     fig = achados_por_faixa(ind["blk_por_faixa"], "Bloqueios x Faixa",
-                            [[0, "#0d1117"], [0.5, "#30363d"], [1, "#378add"]])
+                            [[0, "#f2f7fc"], [0.5, "#9cc3e8"], [1, "#2969BD"]])
     if fig:
         st.plotly_chart(fig, use_container_width=True)
 
@@ -62,12 +62,12 @@ def render_ecg_alteracoes(df, ind):
     achados = ind["achados"]
 
     for cat, title, cor in [
-        ("Repolarizacao", "Tipos de repolarizacao", "#ba7517"),
-        ("Sobrecargas", "Tipos de sobrecarga", "#7f77dd"),
-        ("Fibroses", "Tipos de fibrose", "#d85a30"),
-        ("Baixa Voltagem", "Tipos de baixa voltagem", "#8b949e"),
-        ("Conducao", "Conducao", "#39d2c0"),
-        ("Eixo", "Eixo cardiaco", "#e24b4a"),
+        ("Repolarizacao", "Tipos de repolarizacao", "#D9902E"),
+        ("Sobrecargas", "Tipos de sobrecarga", "#6D5BCA"),
+        ("Fibroses", "Tipos de fibrose", "#E36B2F"),
+        ("Baixa Voltagem", "Tipos de baixa voltagem", "#8B9BB4"),
+        ("Conducao", "Conducao", "#0FA3B1"),
+        ("Eixo", "Eixo cardiaco", "#D64550"),
     ]:
         sub_header(cat)
         data = achados.get(cat)

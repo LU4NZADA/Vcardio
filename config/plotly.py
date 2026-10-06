@@ -1,14 +1,14 @@
 """
-Tema Plotly.
+Tema Plotly - Identidade visual UFVJM (claro).
 """
 
 PLOTLY_THEME = dict(
     paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="#161b22",
-    font_color="#c9d1d9",
+    plot_bgcolor="#f7f8fa",
+    font_color="#1F2430",
     font_family="IBM Plex Mono",
-    xaxis=dict(gridcolor="#21262d", linecolor="#30363d"),
-    yaxis=dict(gridcolor="#21262d", linecolor="#30363d"),
+    xaxis=dict(gridcolor="#e7ebf1", linecolor="#cfd6df"),
+    yaxis=dict(gridcolor="#e7ebf1", linecolor="#cfd6df"),
 )
 
 

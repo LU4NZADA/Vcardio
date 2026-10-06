@@ -24,7 +24,7 @@ def evolucao_mensal(tempo_df):
     )
     configurar_layout(
         fig, height=360,
-        legend=dict(font_size=10, orientation="h", y=-0.15, font_color="#8b949e"),
+        legend=dict(font_size=10, orientation="h", y=-0.15, font_color="#64707D"),
     )
     fig.update_xaxes(tickangle=30)
     criar_range_slider(fig, visible=True)
@@ -37,7 +37,7 @@ def taxa_alteracao(taxa_df):
         taxa_df, x="Mes", y="Pct_Alterados",
         title="% laudos alterados por mes",
         markers=True,
-        color_discrete_sequence=["#e24b4a"],
+        color_discrete_sequence=["#2969BD"],
     )
     fig.update_traces(
         hovertemplate=(
@@ -46,7 +46,7 @@ def taxa_alteracao(taxa_df):
             "<extra></extra>"
         ),
         line=dict(width=3),
-        marker=dict(size=8, line=dict(width=2, color="#0d1117")),
+        marker=dict(size=8, line=dict(width=2, color="#ffffff")),
     )
     configurar_layout(fig, height=300)
     fig.update_xaxes(tickangle=30)
