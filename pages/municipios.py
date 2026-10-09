@@ -45,7 +45,7 @@ def render_ficha_distrito(df, distrito):
             st.markdown(
                 f'<div class="kpi-card" style="border-bottom: 3px solid {cor}>'
                 f'<div class="kpi-label">{row["Diagnostico"]}</div>'
-                f'<div class="kpi-value" style="color:{cor}">{row["Qtd"]}</div>'
+                f'<div class="kpi-value" style="color:#000000">{row["Qtd"]}</div>'
                 f'<div class="kpi-sub">{pct}%</div></div>',
                 unsafe_allow_html=True,
             )
@@ -80,8 +80,8 @@ def render_ficha_distrito(df, distrito):
         for col, (cor, lbl, total, pct) in zip(cols_c, comorb_data):
             with col:
                 st.markdown(
-                    f'<div class="comor-card"><div class="comor-val" style="color:{cor}">{pct}%</div>'
-                    f'<div style="font-size:13px;color:#3A4453">{total}</div>'
+                    f'<div class="comor-card"><div class="comor-val" style="color:#000000">{pct}%</div>'
+                    f'<div style="font-size:13px;color:#000000">{total}</div>'
                     f'<div class="comor-lbl">{lbl}</div></div>',
                     unsafe_allow_html=True,
                 )
@@ -98,10 +98,10 @@ def render_ficha_distrito(df, distrito):
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#f7f8fa",
-        font=dict(color="#1F2430", family="IBM Plex Mono"),
+        font=dict(color="#000000", family="IBM Plex Mono"),
         height=280,
         margin=dict(l=0, r=20, t=30, b=0),
-        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#1F2430")),
+        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#000000")),
     )
     st.plotly_chart(fig, use_container_width=True)
     sub_header("Exames realizados")
@@ -153,7 +153,7 @@ def render_ficha_municipio(df, municipio):
             st.markdown(
                 f'<div class="kpi-card" style="border-bottom: 3px solid {cor}>'
                 f'<div class="kpi-label">{row["Diagnostico"]}</div>'
-                f'<div class="kpi-value" style="color:{cor}">{row["Qtd"]}</div>'
+                f'<div class="kpi-value" style="color:#000000">{row["Qtd"]}</div>'
                 f'<div class="kpi-sub">{pct}%</div></div>',
                 unsafe_allow_html=True,
             )
@@ -188,8 +188,8 @@ def render_ficha_municipio(df, municipio):
         for col, (cor, lbl, total, pct) in zip(cols_c, comorb_data):
             with col:
                 st.markdown(
-                    f'<div class="comor-card"><div class="comor-val" style="color:{cor}">{pct}%</div>'
-                    f'<div style="font-size:13px;color:#3A4453">{total}</div>'
+                    f'<div class="comor-card"><div class="comor-val" style="color:#000000">{pct}%</div>'
+                    f'<div style="font-size:13px;color:#000000">{total}</div>'
                     f'<div class="comor-lbl">{lbl}</div></div>',
                     unsafe_allow_html=True,
                 )
@@ -206,10 +206,10 @@ def render_ficha_municipio(df, municipio):
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#f7f8fa",
-        font=dict(color="#1F2430", family="IBM Plex Mono"),
+        font=dict(color="#000000", family="IBM Plex Mono"),
         height=280,
         margin=dict(l=0, r=20, t=30, b=0),
-        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#1F2430")),
+        title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#000000")),
     )
     st.plotly_chart(fig, use_container_width=True)
     sub_header("Exames realizados")

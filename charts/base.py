@@ -23,7 +23,7 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
         showlegend=showlegend,
         height=height,
         title_font_size=title_size,
-        title_font_color="#1F2430",
+        title_font_color="#000000",
         margin=dict(l=0, r=20, t=50, b=0),
         hovermode="closest",
         dragmode="pan",
@@ -39,7 +39,7 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
             bgcolor="#ffffff",
             bordercolor="#cfd6df",
             font_size=12,
-            font_color="#1F2430",
+            font_color="#000000",
             font_family="IBM Plex Mono",
             namelength=-1,
         )
@@ -56,7 +56,7 @@ def bar_horizontal(df, x, y, text="", color="#2969BD", title="", hover_extra=Non
     )
     fig.update_traces(
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453", family="IBM Plex Mono"),
+        textfont=dict(size=11, color="#000000", family="IBM Plex Mono"),
         marker=dict(line=dict(width=0), cornerradius=4),
         hovertemplate=(
             "<b>%{y}</b><br>"
@@ -99,14 +99,14 @@ def criar_dropdown(fig, botoes, titulo="Filtrar por:", y=1.15):
                 y=y, yanchor="top",
                 bgcolor="#ffffff",
                 bordercolor="#cfd6df",
-                font=dict(color="#3A4453", size=11, family="IBM Plex Mono"),
+                font=dict(color="#000000", size=11, family="IBM Plex Mono"),
                 active=0,
             )
         ],
         annotations=[
             dict(
                 text=t(titulo), x=0.0, y=y + 0.06, xref="paper", yref="paper",
-                showarrow=False, font=dict(color="#64707D", size=10, family="IBM Plex Mono"),
+                showarrow=False, font=dict(color="#000000", size=10, family="IBM Plex Mono"),
             )
         ],
     )
@@ -126,7 +126,7 @@ def criar_range_slider(fig, visible=False):
             bgcolor="#ffffff",
             activecolor="#eaf1fa",
             bordercolor="#cfd6df",
-            font=dict(color="#3A4453", size=10),
+            font=dict(color="#000000", size=10),
         ),
     )
     return fig

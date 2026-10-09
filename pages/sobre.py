@@ -42,7 +42,7 @@ def render():
         margin-bottom: 16px;
     }
     .sobre-card h3 {
-        color: #1F2430;
+        color: #000000;
         font-size: 16px;
         margin-bottom: 16px;
         border-bottom: 2px solid #2969BD;
@@ -61,14 +61,14 @@ def render():
         padding: 14px;
     }
     .info-item .label {
-        color: #64707D;
+        color: #000000;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         margin-bottom: 4px;
     }
     .info-item .valor {
-        color: #101828;
+        color: #000000;
         font-size: 14px;
         font-weight: 600;
     }
@@ -88,12 +88,12 @@ def render():
         text-align: center;
     }
     .lgpd-text {
-        color: #3A4453;
+        color: #000000;
         font-size: 13px;
         line-height: 1.6;
     }
     .lgpd-text strong {
-        color: #2E9E5B;
+        color: #000000;
     }
     .tech-grid {
         display: grid;
@@ -108,12 +108,12 @@ def render():
         text-align: center;
     }
     .tech-item .nome {
-        color: #1F2430;
+        color: #000000;
         font-size: 13px;
         font-weight: 600;
     }
     .tech-item .det {
-        color: #64707D;
+        color: #000000;
         font-size: 11px;
         margin-top: 4px;
     }

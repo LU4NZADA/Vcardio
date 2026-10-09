@@ -35,7 +35,7 @@ def grafico_rotas_distritos(dist):
             showscale=False, cornerradius=4, line=dict(width=0),
         ),
         text=df["km"].apply(lambda x: f"{x:,.0f} km"),
-        textposition="outside", textfont=dict(size=11, color="#3A4453"),
+        textposition="outside", textfont=dict(size=11, color="#000000"),
         hovertemplate=(
             "<b>%{y}</b><br>"
             "Distancia da base: <b>%{x:,.1f} km</b><br>"
@@ -109,7 +109,7 @@ def grafico_mapa_distritos(dist):
             marker=dict(size=18, color="#e8c547", symbol="star"),
             text=[f"BASE: {cidade_base}"],
             textposition="top right",
-            textfont=dict(size=11, color="#e8c547", family="IBM Plex Mono"),
+            textfont=dict(size=11, color="#000000", family="IBM Plex Mono"),
             hovertemplate=f"<b>BASE: {cidade_base}</b><extra></extra>",
             showlegend=False,
         ))
@@ -133,7 +133,7 @@ def grafico_mapa_distritos(dist):
         ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#f7f8fa",
-        font_color="#1F2430",
+        font_color="#000000",
         font_family="IBM Plex Mono",
         height=560,
         margin=dict(l=0, r=0, t=10, b=0),

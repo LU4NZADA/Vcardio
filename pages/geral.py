@@ -62,7 +62,7 @@ def _render_kpis_municipio(df, municipio):
             st.markdown(
                 f"""<div class="kpi-card" style="border-bottom: 3px solid {cor}">
                 <div class="kpi-label">{row['Diagnostico']}</div>
-                <div class="kpi-value" style="color:{cor}">{row['Qtd']}</div>
+                <div class="kpi-value" style="color:#000000">{row['Qtd']}</div>
                 <div class="kpi-sub">{pct}%</div></div>""",
                 unsafe_allow_html=True,
             )
@@ -97,8 +97,8 @@ def _render_kpis_municipio(df, municipio):
             with col:
                 st.markdown(
                     f"""<div class="comor-card">
-                    <div class="comor-val" style="color:{cor}">{pct}%</div>
-                    <div style="font-size:13px;color:#3A4453">{total}</div>
+                    <div class="comor-val" style="color:#000000">{pct}%</div>
+                    <div style="font-size:13px;color:#000000">{total}</div>
                     <div class="comor-lbl">{lbl}</div></div>""",
                     unsafe_allow_html=True,
                 )

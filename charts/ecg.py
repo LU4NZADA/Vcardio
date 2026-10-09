@@ -20,8 +20,8 @@ def achados_bar(df_ach, title, color="#2969BD"):
             colorscale=[[0, "#eef3f9"], [0.3, "#dbe4ee"], [0.6, color], [1, color]],
             showscale=True,
             colorbar=dict(
-                title=dict(text="%", font=dict(color="#64707D", size=10)),
-                tickfont=dict(color="#64707D", size=9),
+                title=dict(text="%", font=dict(color="#000000", size=10)),
+                tickfont=dict(color="#000000", size=9),
                 len=0.6, thickness=12,
                 bgcolor="rgba(0,0,0,0)",
                 bordercolor="#cfd6df",
@@ -30,7 +30,7 @@ def achados_bar(df_ach, title, color="#2969BD"):
         ),
         text=df_ach["Casos"],
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         customdata=df_ach["%"],
         hovertemplate=(
             "<b>%{y}</b><br>"
@@ -65,7 +65,7 @@ def achados_por_sexo(matrix_df, title):
     )
     configurar_layout(
         fig, height=360,
-        legend=dict(font_size=10, orientation="h", y=-0.2, font_color="#64707D"),
+        legend=dict(font_size=10, orientation="h", y=-0.2, font_color="#000000"),
     )
     fig.update_xaxes(tickangle=20)
     return fig

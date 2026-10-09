@@ -29,7 +29,7 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
         lat=mp["lat"], lon=mp["lon"], mode="markers+text",
         marker=dict(size=mp["size"], color=mp["cor"], opacity=0.85, sizemode="area"),
         text=mp["Cidade"], textposition="top right",
-        textfont=dict(size=9, color="#3A4453", family="IBM Plex Mono"),
+        textfont=dict(size=9, color="#000000", family="IBM Plex Mono"),
         customdata=mp[["exames", "alterados", "pct", "risco"]].values,
         hovertemplate=(
             "<b>%{text}</b><br>"
@@ -56,7 +56,7 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
                 bgcolor="rgba(255,255,255,0.92)",
                 bordercolor="#cfd6df", borderwidth=1,
                 borderpad=8,
-                font=dict(size=10, family="IBM Plex Mono", color="#3A4453"),
+                font=dict(size=10, family="IBM Plex Mono", color="#000000"),
                 align="left",
             ),
         ],
@@ -70,7 +70,7 @@ def mapa_risco(mapa_df, titulo_col="Cidade"):
         **PLOTLY_THEME, height=560, margin=dict(l=0, r=0, t=10, b=0),
         hoverlabel=dict(
             bgcolor="#ffffff", bordercolor="#cfd6df",
-            font_size=12, font_color="#1F2430", font_family="IBM Plex Mono",
+            font_size=12, font_color="#000000", font_family="IBM Plex Mono",
         ),
     )
     return fig
@@ -106,7 +106,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
             lat=mp["lat"], lon=mp["lon"], mode="markers+text",
             marker=dict(size=mp["size"], color="#2969BD", opacity=0.35, sizemode="area"),
             text=mp["Cidade"], textposition="top right",
-            textfont=dict(size=8, color="#64707D", family="IBM Plex Mono"),
+            textfont=dict(size=8, color="#000000", family="IBM Plex Mono"),
             customdata=mp[["exames"]].values,
             hovertemplate=(
                 "<b>%{text}</b><br>"
@@ -129,7 +129,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
             marker=dict(size=45, color="#e8c547", opacity=1.0, sizemode="area"),
             text=[f"{cidade_destaque} ({n_exames} exames)"],
             textposition="top right",
-            textfont=dict(size=13, color="#e8c547", family="IBM Plex Mono"),
+            textfont=dict(size=13, color="#000000", family="IBM Plex Mono"),
             hovertemplate=(
                 f"<b>{cidade_destaque}</b><br>"
                 f"Exames: <b>{n_exames:,.0f}</b><br>"
@@ -144,7 +144,7 @@ def mapa_simples(mapa_df, cidade_destaque=None, df=None):
             lat=mp["lat"], lon=mp["lon"], mode="markers+text",
             marker=dict(size=mp["size"], color="#2969BD", opacity=0.8, sizemode="area"),
             text=mp["Cidade"], textposition="top right",
-            textfont=dict(size=9, color="#3A4453", family="IBM Plex Mono"),
+            textfont=dict(size=9, color="#000000", family="IBM Plex Mono"),
             customdata=mp[["exames"]].values,
             hovertemplate=(
                 "<b>%{text}</b><br>"

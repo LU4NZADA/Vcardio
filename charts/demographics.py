@@ -26,13 +26,13 @@ def sexo_pie(sexo_counts):
         hole=0.6,
         marker=dict(colors=cores, line=dict(color="#ffffff", width=2)),
         textinfo="label+percent",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         hovertemplate="<b>%{label}</b><br>Quantidade: %{value}<br>Percentual: %{percent}<extra></extra>",
         pull=[0.02] * len(df),
     ))
     configurar_layout(
         fig, height=300,
-        legend=dict(font_size=10, orientation="h", y=-0.15, font_color="#64707D"),
+        legend=dict(font_size=10, orientation="h", y=-0.15, font_color="#000000"),
     )
     return fig
 
@@ -44,7 +44,7 @@ def ano_bar(ano_counts):
     )
     fig.update_traces(
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         marker=dict(cornerradius=4, line=dict(width=0)),
         hovertemplate="<b>Ano %{x}</b><br>Exames: <b>%{y:,.0f}</b><extra></extra>",
     )
@@ -59,7 +59,7 @@ def faixa_bar(faixa_counts):
     )
     fig.update_traces(
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         marker=dict(cornerradius=4, line=dict(width=0)),
         hovertemplate="<b>%{x}</b><br>Exames: <b>%{y:,.0f}</b><extra></extra>",
     )
@@ -80,7 +80,7 @@ def piramide(piram_df):
     fig.update_xaxes(tickvals=[], title="")
     configurar_layout(
         fig, height=340,
-        legend=dict(font_size=10, orientation="h", y=-0.1, font_color="#64707D"),
+        legend=dict(font_size=10, orientation="h", y=-0.1, font_color="#000000"),
     )
     return fig
 
@@ -95,7 +95,7 @@ def top_municipios(top_df):
         x=top_df["Municipio"], y=top_df["Qtd"],
         marker=dict(color=cores, cornerradius=4, line=dict(width=0)),
         text=top_df["Qtd"], textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         hovertemplate="<b>%{x}</b><br>Exames: <b>%{y:,.0f}</b><extra></extra>",
     ))
     configurar_layout(fig, height=320, title="Top 15 municipios")
@@ -110,7 +110,7 @@ def sazonalidade(saz_df):
     )
     fig.update_traces(
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         marker=dict(cornerradius=4, line=dict(width=0)),
         hovertemplate="<b>%{x}</b><br>Exames: <b>%{y:,.0f}</b><extra></extra>",
     )

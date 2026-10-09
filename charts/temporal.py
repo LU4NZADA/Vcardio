@@ -24,7 +24,7 @@ def evolucao_mensal(tempo_df):
     )
     configurar_layout(
         fig, height=360,
-        legend=dict(font_size=10, orientation="h", y=-0.15, font_color="#64707D"),
+        legend=dict(font_size=10, orientation="h", y=-0.15, font_color="#000000"),
     )
     fig.update_xaxes(tickangle=30)
     criar_range_slider(fig, visible=True)

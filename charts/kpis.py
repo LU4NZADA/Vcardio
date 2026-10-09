@@ -20,6 +20,6 @@ def render_comorb_cards(comorb_data):
     for col, (cor, lbl, val, pct) in zip(cols, comorb_data):
         with col:
             st.markdown(f"""<div class="comor-card">
-              <div class="comor-val" style="color:{cor}">{pct}%</div>
-              <div style="font-size:13px;color:#3A4453">{val:,}</div>
+              <div class="comor-val" style="color:#000000">{pct}%</div>
+              <div style="font-size:13px;color:#000000">{val:,}</div>
               <div class="comor-lbl">{lbl}</div></div>""", unsafe_allow_html=True)

@@ -35,17 +35,17 @@ def render(df, ind):
         hole=0.6,
         marker=dict(colors=["#D64550", "#2969BD"]),
         textinfo="label+percent",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
     )])
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#f7f8fa",
-        font=dict(color="#1F2430", family="IBM Plex Mono"),
+        font=dict(color="#000000", family="IBM Plex Mono"),
         height=300,
         margin=dict(l=0, r=0, t=30, b=0),
         showlegend=True,
-        legend=dict(font=dict(color="#64707D")),
-        title=dict(text="Distribuicao por sexo", font=dict(color="#1F2430")),
+        legend=dict(font=dict(color="#000000")),
+        title=dict(text="Distribuicao por sexo", font=dict(color="#000000")),
     )
     st.plotly_chart(fig, use_container_width=True)
 
@@ -109,12 +109,12 @@ def render(df, ind):
         fig.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="#f7f8fa",
-            font=dict(color="#1F2430", family="IBM Plex Mono"),
+            font=dict(color="#000000", family="IBM Plex Mono"),
             height=350,
             margin=dict(l=0, r=20, t=30, b=80),
             barmode="overlay",
             xaxis=dict(tickangle=-45),
-            legend=dict(font=dict(color="#64707D")),
+            legend=dict(font=dict(color="#000000")),
         )
         st.plotly_chart(fig, use_container_width=True)
 

@@ -32,7 +32,7 @@ def risco_territorial(risco_df):
         marker=dict(color=cores, cornerradius=4, line=dict(width=0)),
         text=risco["pct"].apply(lambda x: f"{x}%"),
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         customdata=risco[["total", "alterados", "idade_media"]].values,
         hovertemplate=(
             "<b>%{y}</b><br>"
@@ -83,7 +83,7 @@ def comorb_municipio(cm_df, label):
         ),
         text=cm["Pct"].apply(lambda x: f"{x}%"),
         textposition="outside",
-        textfont=dict(size=11, color="#3A4453"),
+        textfont=dict(size=11, color="#000000"),
         customdata=cm[["total", "positivos"]].values,
         hovertemplate=(
             "<b>%{y}</b><br>"
