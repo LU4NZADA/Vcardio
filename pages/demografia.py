@@ -7,6 +7,7 @@ import pandas as pd
 from components import sub_header, fmt
 from charts.kpis import render_kpi_row
 from charts.demographics import ano_bar, faixa_bar, piramide, top_municipios, sazonalidade
+from config.plotly import aplicar_fontes_pretas
 
 
 def render(df, ind):
@@ -47,6 +48,7 @@ def render(df, ind):
         legend=dict(font=dict(color="#000000")),
         title=dict(text="Distribuicao por sexo", font=dict(color="#000000")),
     )
+    aplicar_fontes_pretas(fig)
     st.plotly_chart(fig, use_container_width=True)
 
     col1, col2 = st.columns(2)
@@ -116,6 +118,7 @@ def render(df, ind):
             xaxis=dict(tickangle=-45),
             legend=dict(font=dict(color="#000000")),
         )
+        aplicar_fontes_pretas(fig)
         st.plotly_chart(fig, use_container_width=True)
 
         # Tabela

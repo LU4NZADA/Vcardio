@@ -5,7 +5,7 @@ Todas as figuras recebem hover rico, animacoes e controles interativos.
 
 import plotly.express as px
 import plotly.graph_objects as go
-from config.plotly import PLOTLY_THEME
+from config.plotly import PLOTLY_THEME, aplicar_fontes_pretas
 from utils.textos import t
 
 
@@ -13,6 +13,7 @@ def aplicar_tema(fig, **overrides):
     tema = {**PLOTLY_THEME}
     tema.update(overrides)
     fig.update_layout(**tema)
+    aplicar_fontes_pretas(fig)
     return fig
 
 
@@ -23,7 +24,6 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
         showlegend=showlegend,
         height=height,
         title_font_size=title_size,
-        title_font_color="#000000",
         margin=dict(l=0, r=20, t=50, b=0),
         hovermode="closest",
         dragmode="pan",
@@ -44,6 +44,7 @@ def configurar_layout(fig, height=300, title_size=13, showlegend=False, **kw):
             namelength=-1,
         )
     )
+    aplicar_fontes_pretas(fig)
     return fig
 
 

@@ -11,6 +11,7 @@ from config.app import COMORB_COLS
 from config.colors import DIAG_COLORS
 from constants import ECG_ACHADOS
 from constants_locais import LOCAIS, _norm
+from config.plotly import aplicar_fontes_pretas
 
 
 def render_ficha_distrito(df, distrito):
@@ -103,6 +104,7 @@ def render_ficha_distrito(df, distrito):
         margin=dict(l=0, r=20, t=30, b=0),
         title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#000000")),
     )
+    aplicar_fontes_pretas(fig)
     st.plotly_chart(fig, use_container_width=True)
     sub_header("Exames realizados")
     cols_mostrar = ["idade", "Sexo", "diag_cat", "Data_cadastro", "Hipertenso",
@@ -211,6 +213,7 @@ def render_ficha_municipio(df, municipio):
         margin=dict(l=0, r=20, t=30, b=0),
         title=dict(text="Distribuicao por faixa etaria", font=dict(size=13, color="#000000")),
     )
+    aplicar_fontes_pretas(fig)
     st.plotly_chart(fig, use_container_width=True)
     sub_header("Exames realizados")
     cols_mostrar = ["idade", "Sexo", "diag_cat", "Data_cadastro", "Hipertenso",
